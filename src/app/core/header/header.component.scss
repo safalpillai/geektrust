@@ -1,0 +1,24 @@
+@import '~assets/scss/base';
+
+a {
+    padding: 2px 40px;
+    position: relative;
+    font-size: 1rem;
+    color: $w;
+    display: block;
+    text-transform: capitalize;
+
+    &:first-child {
+        padding-left: 0;
+    }
+    &:not(:first-child):before {
+        @include tl(0, 0);
+        content: '';
+        width: 1px;
+        height: 100%;
+        background: darken($w, 15%);
+    }
+    &:hover {
+        color: $b;
+    }
+}

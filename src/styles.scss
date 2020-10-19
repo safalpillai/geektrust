@@ -1,1 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~assets/scss/base";
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+body {
+    margin: 0;
+    font-size: 16px;
+}
+::-webkit-scrollbar {
+    width: 12px;
+    background: #dddddd;
+}
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+}
+select:hover, select:active, select:focus, 
+input:hover, input:active, input:focus, 
+button:hover, button:active, button:focus {
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+a {
+    @include transit(0.3s);
+    text-decoration: none;
+
+    * {
+        @include transit(0.3s);
+    }
+    &:hover {
+        text-decoration: none;
+    }
+}
+.root-component {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+header, footer {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+header {
+    padding: 30px;
+    background: $primary;
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background: $secondary;
+}
+.router-container {
+    position: relative;
+    z-index: 50;
+    margin-bottom: 50px;
+    padding: 30px;
+    background: $w;
+}
