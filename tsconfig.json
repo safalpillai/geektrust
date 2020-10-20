@@ -17,7 +17,6 @@
         ],
         "paths": {
             "@components/*": ["app/components/*"],
-            "@config/*": ["app/config/*"],
             "@core/*": ["app/core/*"],
             "@interceptors/*": ["app/interceptors/*"],
             "@models/*": ["app/models/*"],
