@@ -1,22 +1,23 @@
 /**
  * API token generated from GeekTrust
  */
-export type AppToken = {
+export interface IAppToken {
     token: string;
 }
 
 /**
  * Planet details
  */
-export type Planet = {
+export interface IPlanet {
     name: string;
-    distance: string;
+    distance: number;
+    selected?: boolean;
 }
 
 /**
- * Information about all the available spacecrafts
+ * Spacecrafts details
  */
-export type Spacecraft = {
+export interface IVehicle {
     name: string;
     total_no: number;
     max_distance: number;
@@ -26,7 +27,7 @@ export type Spacecraft = {
 /**
  * POST body of find API
  */
-export type FindFalcone = {
+export interface IFindFalcone {
     token: string;
     planet_names: string[];
     vehicle_names: string[];

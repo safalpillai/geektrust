@@ -24,11 +24,11 @@ button:hover, button:active, button:focus {
     box-shadow: none !important;
 }
 a {
-    @include transit(0.3s);
+    @include transit(1s);
     text-decoration: none;
 
     * {
-        @include transit(0.3s);
+        @include transit(1s);
     }
     &:hover {
         text-decoration: none;

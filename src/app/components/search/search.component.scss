@@ -1,0 +1,78 @@
+@import '~assets/scss/base';
+
+.search-container {
+    width: 100%;
+    position: relative;
+    cursor: pointer;
+
+    &:after {
+        @include basvg(tick, 12px, 12px, 12px 12px);
+        @include tr(50%, 5px);
+        margin-top: -6px;
+        display: none;
+    }
+    &.done {
+        pointer-events: none;
+
+        &:after {
+            display: block;
+        }
+    }
+    input {
+        width: 100%;
+        font-size: 0.85rem;
+        border: none;
+        padding: 5px 0;
+        border-bottom: 1px solid $t;
+        color: darken($grey, 10%);
+        padding-right: 25px;
+        border-bottom-color: $disabled;
+    }
+    .dropdowns {
+        @include material-shadow;
+        @include tl(26px, 0);
+        width: 100%;
+
+        a, span {
+            padding: 10px 0;
+            display: block;
+            font-size: 0.85rem;
+            border-bottom: 1px solid $disabled;
+            background: lighten($disabled, 10%);
+            text-transform: capitalize;
+            color: $b;
+        }
+        span {
+            padding-left: 15px;
+        }
+        a {
+            padding: 10px 15px 10px 42px;
+            position: relative;
+
+            &:before, &:after {
+                position: absolute;
+                top: 50%;
+                margin-top: -6px;
+            }
+            &:before {
+                @include basvg(planet, 12px, 12px, 12px 12px);
+                left: 15px;
+            }
+            &:after {
+                @include basvg(tick, 12px, 12px, 12px 12px);
+                right: 15px;
+                display: none;
+            }
+            &:hover {
+                background: $disabled;
+            }
+            &.selected {
+                pointer-events: none;
+
+                &:after {
+                    display: block;
+                }
+            }
+        }
+    }
+}
