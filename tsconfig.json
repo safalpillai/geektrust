@@ -1,23 +1,31 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "downlevelIteration": true,
-    "experimentalDecorators": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "target": "es2015",
-    "lib": [
-      "es2018",
-      "dom"
-    ]
-  },
-  "angularCompilerOptions": {
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
-  }
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": "src/",
+        "outDir": "./dist/out-tsc",
+        "sourceMap": true,
+        "declaration": false,
+        "downlevelIteration": true,
+        "experimentalDecorators": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "importHelpers": true,
+        "target": "es2015",
+        "lib": [
+            "es2018",
+            "dom"
+        ],
+        "paths": {
+            "@components/*": ["app/components/*"],
+            "@core/*": ["app/core/*"],
+            "@interceptors/*": ["app/interceptors/*"],
+            "@models/*": ["app/models/*"],
+            "@services/*": ["app/services/*"],
+            "@environments/*": ["environments/*"],
+        }
+    },
+    "angularCompilerOptions": {
+        "fullTemplateTypeCheck": true,
+        "strictInjectionParameters": true
+    }
 }
