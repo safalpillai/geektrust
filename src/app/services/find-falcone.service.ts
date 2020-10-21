@@ -72,7 +72,9 @@ export class FindFalconeService {
         this.searchCriteria = new SearchCriteria(localStorage.getItem('apiToken'));
         // get planets
         this.http.get<IPlanet[]>('planets').subscribe(response => {
-            this.planets$.next(response.map(planet => new Planet(planet)));
+            this.planets$.next(
+                response.map(planet => new Planet(planet))
+            );
         });
         // get vehicles
         this.http.get<IVehicle[]>('vehicles').subscribe(response => {

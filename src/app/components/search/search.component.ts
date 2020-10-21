@@ -25,7 +25,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     constructor(
         private findFalconeService: FindFalconeService,
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         // Subscribe to planets
@@ -52,7 +52,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.subsink.sink = this.searchOutput$.subscribe(query => {
             this.planets = query
                 ? this.copyOfPlanets.filter(planet => planet.name.toLowerCase().includes(query.toLowerCase()))
-                : this.copyOfPlanets; 
+                : this.copyOfPlanets;
         });
     }
 
@@ -68,15 +68,17 @@ export class SearchComponent implements OnInit, OnDestroy {
             this.searchFocused = false;
         }, 200);
     }
-    
+
     selectPlanet(selected: IPlanet) {
         const updatedPlanets: IPlanet[] = this.copyOfPlanets
             .map(planet => {
                 planet.name === selected.name && (planet.selected = true);
                 return planet;
             });
-        this.findFalconeService.planets$.next(updatedPlanets);
         this.search.setValue(selected.name);
         this.searchDone = true;
+        setTimeout(() => {
+            this.findFalconeService.planets$.next(updatedPlanets);
+        });
     }
 }
