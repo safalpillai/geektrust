@@ -1,9 +1,12 @@
 $primary: #28abb9;
 $secondary: #2d6187;
+$t: transparent;
 $w: #fff;
 $b: #333;
 $disabled: #d2d3c9;
 $grey: darken($disabled, 20%);
+$green: #008000;
+
 
 @mixin transition {
     -webkit-transition: all 0.6s ease-out;
@@ -70,10 +73,40 @@ $grey: darken($disabled, 20%);
     -moz-box-shadow: $a $b $c rgba($d, $e, $f, $g);
     box-shadow: $a $b $c rgba($d, $e, $f, $g);
 }
+@mixin basvg($svg, $width, $height, $bgsize) {
+    background: url("assets/images/#{$svg}.svg") no-repeat;
+    content: "";
+    width: $width;
+    height: $height;
+    background-size: $bgsize;
+}
+@mixin bajpg($jpg, $width, $height, $bgsize) {
+    background: url("assets/images/#{$jpg}.jpg") no-repeat;
+    content: "";
+    width: $width;
+    height: $height;
+    background-size: $bgsize;
+}
+@mixin bapng($png, $width, $height, $bgsize) {
+    background: url("assets/images/#{$png}.png") no-repeat;
+    content: "";
+    width: $width;
+    height: $height;
+    background-size: $bgsize;
+}
 @mixin transform($t) {
     -webkit-transform: $t;
     -moz-transform: $t;
     transform: $t;
+}
+@mixin svg($svg) {
+    background: url("assets/images/#{$svg}.svg") no-repeat;
+}
+@mixin jpg($jpg) {
+    background: url("assets/images/#{$jpg}.jpg") no-repeat;
+}
+@mixin png($png) {
+    background: url("assets/images/#{$png}.png") no-repeat;
 }
 @mixin material-shadow {
     @include box-shadow(0, 0, 5px, 0, 0, 0, 0.1);

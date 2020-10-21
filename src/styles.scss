@@ -24,11 +24,11 @@ button:hover, button:active, button:focus {
     box-shadow: none !important;
 }
 a {
-    @include transit(0.3s);
+    @include transit(1s);
     text-decoration: none;
 
     * {
-        @include transit(0.3s);
+        @include transit(1s);
     }
     &:hover {
         text-decoration: none;
@@ -61,7 +61,7 @@ footer {
 .router-container {
     min-height: calc(100vh - 110px);
     margin-bottom: 50px;
-    padding: 30px;
+    padding: 10px 30px;
     position: relative;
     z-index: 50;
     background: $w;

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '@environments/environment';
 import { BaseHttpService } from '@services/base-http.service';
-import { AppToken } from '@models/core.model';
+import { IAppToken } from '@models/core.model';
 
 @Component({
     selector: 'app-root',
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.http.post<AppToken>('token').subscribe(response => {
+        this.http.post<IAppToken>('token').subscribe(response => {
             localStorage.removeItem('apiToken');
             localStorage.setItem('apiToken', response.token);
         });

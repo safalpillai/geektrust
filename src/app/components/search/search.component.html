@@ -1,0 +1,15 @@
+<section class="search-container" [class.done]="searchDone">
+    <!-- search textbox -->
+    <input #searchInput [formControl]="search" type="text" placeholder="Search Planets" spellcheck="false"
+        (focus)="searchFocused = true" (blur)="debouncedBlur()">
+
+    <!-- dropdowns -->
+    <div [hidden]="!searchFocused" class="dropdowns">
+        <ng-container *ngFor="let planet of planets">
+            <a [class.selected]="planet.selected" (click)="selectPlanet(planet)" href="javascript:void(0)">
+                {{ planet.name }}
+            </a>
+        </ng-container>
+        <span *ngIf="searchFocused && !planets?.length">No planets found!</span>
+    </div>
+</section>
