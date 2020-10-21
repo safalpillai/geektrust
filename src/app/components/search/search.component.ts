@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { IPlanet, IVehicle } from '@models/core.model';
 import { FindFalconeService } from '@services/find-falcone.service';
 import { Subject } from 'rxjs';
@@ -15,24 +15,34 @@ import { SubSink } from 'subsink';
     styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit, OnDestroy {
-    searchOutput$ = new Subject<string>();
-    search = new FormControl('');
-    subsink = new SubSink();
+    @Input() INDEX;
     planets: IPlanet[];
     copyOfPlanets: IPlanet[];
-    searchFocused = false;
-    searchDone = false;
+    allOptions: IVehicle[][];
+    formGroup: FormGroup;
+    chosenPlanet: IPlanet = null;
+    search = new FormControl('');
+    searchOutput$ = new Subject<string>();
+    subsink = new SubSink();
+    isSearchFocused = false;
+    isOptionsShown = false;
 
     constructor(
         private findFalconeService: FindFalconeService,
+        private formBuilder: FormBuilder,
     ) { }
 
     ngOnInit(): void {
+        // Set options form group
+        this.formGroup = this.formBuilder.group({
+            vehicleRadio: ['']
+        });
         // Subscribe to planets
         this.findFalconeService.planets$.subscribe(planets => {
             this.planets = planets;
             this.copyOfPlanets = planets.slice();
         });
+
         // Emit search textbox changes using subject
         this.subsink.sink = this.search.valueChanges.pipe(
             debounceTime(600),
@@ -54,9 +64,14 @@ export class SearchComponent implements OnInit, OnDestroy {
                 ? this.copyOfPlanets.filter(planet => planet.name.toLowerCase().includes(query.toLowerCase()))
                 : this.copyOfPlanets;
         });
+
+        // Subscribe to all options array
+        this.subsink.sink = this.findFalconeService.options$
+            .subscribe(allOptions => this.allOptions = allOptions);
     }
 
     ngOnDestroy() {
+        // Unsubscribe component subscriptions to avoid possible memory leaks
         this.subsink.unsubscribe();
     }
 
@@ -65,20 +80,45 @@ export class SearchComponent implements OnInit, OnDestroy {
      */
     debouncedBlur() {
         setTimeout(() => {
-            this.searchFocused = false;
+            this.isSearchFocused = false;
         }, 200);
     }
 
+    /**
+     * Planet selection event
+     * @param selected Selected planet to be inserted in SearchCriteria.planet_names
+     */
     selectPlanet(selected: IPlanet) {
+        this.chosenPlanet = selected;
+
+        // Update SearchCriteria.planet_names
+        this.findFalconeService.setPlanetAsSelected(this.INDEX, selected.name);
+
+        // Update planets array with selections
         const updatedPlanets: IPlanet[] = this.copyOfPlanets
             .map(planet => {
                 planet.name === selected.name && (planet.selected = true);
                 return planet;
             });
-        this.search.setValue(selected.name);
-        this.searchDone = true;
         setTimeout(() => {
             this.findFalconeService.planets$.next(updatedPlanets);
         });
+
+        // Set value of search textbox
+        this.search.setValue(selected.name);
+
+        // Show options section
+        this.isOptionsShown = true;
+    }
+
+    /**
+     * Vehicle selection event
+     * @param selected Selected vehicle to be inserted in SearchCriteria.vehicle_names
+     */
+    selectVehicle(selected: IVehicle) {
+        this.findFalconeService.setVehicleAsSelected(this.INDEX, selected.name);
+
+        // Reset all options array
+        this.findFalconeService.resetAllVehicleOptions(this.INDEX);
     }
 }

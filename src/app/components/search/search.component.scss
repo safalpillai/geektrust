@@ -68,11 +68,39 @@
             }
             &.selected {
                 pointer-events: none;
+                color: $grey;
 
+                &:before {
+                    @include basvg(planet-disabled, 12px, 12px, 12px 12px);
+                }
                 &:after {
                     display: block;
                 }
             }
+        }
+    }
+}
+.options-flex {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: $b;
+    margin: 15px 0;
+
+    &.disabled {
+        color: $grey;
+        pointer-events: none;
+    }
+    input {
+        margin: -1px 6px 0 0;
+    }
+    span {
+        font-size: 0.8rem;
+        display: inline-block;
+
+        &:last-child {
+            color: $grey;
+            margin-left: 4px;
         }
     }
 }
