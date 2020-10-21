@@ -20,11 +20,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     copyOfPlanets: IPlanet[];
     allOptions: IVehicle[][];
     formGroup: FormGroup;
-    searchOutput$ = new Subject<string>();
+    chosenPlanet: IPlanet = null;
     search = new FormControl('');
+    searchOutput$ = new Subject<string>();
     subsink = new SubSink();
     isSearchFocused = false;
-    isSearchDone = false;
+    isOptionsShown = false;
 
     constructor(
         private findFalconeService: FindFalconeService,
@@ -65,10 +66,12 @@ export class SearchComponent implements OnInit, OnDestroy {
         });
 
         // Subscribe to all options array
-        this.subsink.sink = this.findFalconeService.options$.subscribe(allOptions => this.allOptions = allOptions);
+        this.subsink.sink = this.findFalconeService.options$
+            .subscribe(allOptions => this.allOptions = allOptions);
     }
 
     ngOnDestroy() {
+        // Unsubscribe component subscriptions to avoid possible memory leaks
         this.subsink.unsubscribe();
     }
 
@@ -86,6 +89,11 @@ export class SearchComponent implements OnInit, OnDestroy {
      * @param selected Selected planet to be inserted in SearchCriteria.planet_names
      */
     selectPlanet(selected: IPlanet) {
+        this.chosenPlanet = selected;
+
+        // Update SearchCriteria.planet_names
+        this.findFalconeService.setPlanetAsSelected(this.INDEX, selected.name);
+
         // Update planets array with selections
         const updatedPlanets: IPlanet[] = this.copyOfPlanets
             .map(planet => {
@@ -99,19 +107,15 @@ export class SearchComponent implements OnInit, OnDestroy {
         // Set value of search textbox
         this.search.setValue(selected.name);
 
-        // Update SearchCriteria.planet_names
-        this.findFalconeService.setPlanetAsSelected(this.INDEX, selected.name);
-
         // Show options section
-        this.isSearchDone = true;
+        this.isOptionsShown = true;
     }
 
     /**
      * Vehicle selection event
      * @param selected Selected vehicle to be inserted in SearchCriteria.vehicle_names
      */
-    setVehicleAsSelected(selected: IVehicle) {
-        console.log({selected});
+    selectVehicle(selected: IVehicle) {
         this.findFalconeService.setVehicleAsSelected(this.INDEX, selected.name);
 
         // Reset all options array

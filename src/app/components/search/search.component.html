@@ -1,4 +1,4 @@
-<section class="search-container" [class.done]="isSearchDone">
+<section class="search-container" [class.done]="chosenPlanet && !isSearchFocused">
     <!-- search textbox -->
     <input #searchInput [formControl]="search" type="text" placeholder="Search Planets" spellcheck="false"
         (focus)="isSearchFocused = true" (blur)="debouncedBlur()">
@@ -15,11 +15,13 @@
 </section>
 
 <!-- radio buttons -->
-<section *ngIf="isSearchDone" class="radio-container">
+<section *ngIf="isOptionsShown" class="radio-container">
     <form [formGroup]="formGroup">
         <ng-container *ngFor="let vehicle of allOptions[INDEX]">
-            <div class="options-flex">
-                <input (change)="setVehicleAsSelected(vehicle)" type="radio" 
+            <div class="options-flex"
+                [class.disabled]="!vehicle.total_no 
+                || (chosenPlanet.distance > vehicle.max_distance)">
+                <input (change)="selectVehicle(vehicle)" type="radio" 
                     [value]="vehicle.name" formControlName="vehicleRadio">
                 <span>{{ vehicle.name }}</span>
                 <span>({{ vehicle.total_no }})</span>

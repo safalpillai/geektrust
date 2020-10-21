@@ -68,7 +68,11 @@
             }
             &.selected {
                 pointer-events: none;
+                color: $grey;
 
+                &:before {
+                    @include basvg(planet-disabled, 12px, 12px, 12px 12px);
+                }
                 &:after {
                     display: block;
                 }
@@ -83,6 +87,10 @@
     color: $b;
     margin: 15px 0;
 
+    &.disabled {
+        color: $grey;
+        pointer-events: none;
+    }
     input {
         margin: -1px 6px 0 0;
     }
