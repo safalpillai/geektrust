@@ -76,3 +76,23 @@
         }
     }
 }
+.options-flex {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: $b;
+    margin: 15px 0;
+
+    input {
+        margin: -1px 6px 0 0;
+    }
+    span {
+        font-size: 0.8rem;
+        display: inline-block;
+
+        &:last-child {
+            color: $grey;
+            margin-left: 4px;
+        }
+    }
+}

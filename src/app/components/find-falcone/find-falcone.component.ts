@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { IPlanet, IVehicle } from '@models/core.model';
 import { BaseHttpService } from '@services/base-http.service';
 import { FindFalconeService } from '@services/find-falcone.service';
 
@@ -12,6 +11,7 @@ export class FindFalconeComponent implements OnInit {
 
     constructor(
         private http: BaseHttpService,
+        private findFalconeService: FindFalconeService,
     ) { }
 
     ngOnInit(): void {}

@@ -1,15 +1,29 @@
-<section class="search-container" [class.done]="searchDone">
+<section class="search-container" [class.done]="isSearchDone">
     <!-- search textbox -->
     <input #searchInput [formControl]="search" type="text" placeholder="Search Planets" spellcheck="false"
-        (focus)="searchFocused = true" (blur)="debouncedBlur()">
+        (focus)="isSearchFocused = true" (blur)="debouncedBlur()">
 
     <!-- dropdowns -->
-    <div [hidden]="!searchFocused" class="dropdowns">
+    <div [hidden]="!isSearchFocused" class="dropdowns">
         <ng-container *ngFor="let planet of planets">
             <a [class.selected]="planet.selected" (click)="selectPlanet(planet)" href="javascript:void(0)">
                 {{ planet.name }}
             </a>
         </ng-container>
-        <span *ngIf="searchFocused && !planets?.length">No planets found!</span>
+        <span *ngIf="isSearchFocused && !planets?.length">No planets found!</span>
     </div>
+</section>
+
+<!-- radio buttons -->
+<section *ngIf="isSearchDone" class="radio-container">
+    <form [formGroup]="formGroup">
+        <ng-container *ngFor="let vehicle of allOptions[INDEX]">
+            <div class="options-flex">
+                <input (change)="setVehicleAsSelected(vehicle)" type="radio" 
+                    [value]="vehicle.name" formControlName="vehicleRadio">
+                <span>{{ vehicle.name }}</span>
+                <span>({{ vehicle.total_no }})</span>
+            </div>
+        </ng-container>
+    </form>
 </section>
