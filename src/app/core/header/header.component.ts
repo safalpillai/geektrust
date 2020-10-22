@@ -25,12 +25,4 @@ export class HeaderComponent implements OnInit {
                 && this.renderer.addClass(document.querySelector('#resetButton'), 'hide-reset');
         });
     }
-
-    /**
-     * Reset selected planets
-     */
-    resetPlanets() {
-        this.findFalconeService.searchCriteria = new SearchCriteria(localStorage.getItem('apiToken'));
-        this.findFalconeService.resetFindFalconeState$.next();
-    }
 }

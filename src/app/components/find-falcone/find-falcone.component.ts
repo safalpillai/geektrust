@@ -73,4 +73,14 @@ export class FindFalconeComponent implements OnInit, OnDestroy {
             else this.router.navigate(['/result']);
         });
     }
+
+
+    /**
+     * Reset state
+     */
+    resetState() {
+        this.findFalconeService.searchCriteria = new SearchCriteria(localStorage.getItem('apiToken'));
+        this.findFalconeService.resetFindFalconeState$.next();
+        this.isButtonShown = false;
+    }
 }
