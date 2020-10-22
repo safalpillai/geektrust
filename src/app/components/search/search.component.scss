@@ -104,3 +104,11 @@
         }
     }
 }
+.caret {
+    @include tr(50%, 0);
+    border-left: 5px solid $t;
+    border-right: 5px solid $t;
+    border-top: 5px solid $grey;
+    pointer-events: none;
+    margin-top: -3px;
+}

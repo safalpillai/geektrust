@@ -1,7 +1,10 @@
 <section class="search-container" #searchWrapper [class.done]="chosenPlanet && !isSearchFocused">
     <!-- search textbox -->
-    <input #searchInput [formControl]="search" type="text" placeholder="Search Planets" spellcheck="false"
-        (focus)="isSearchFocused = true" (blur)="debouncedBlur()">
+    <div style="position: relative">
+        <input #searchInput [formControl]="search" type="text" placeholder="Search Planets" spellcheck="false"
+            (focus)="isSearchFocused = true" (blur)="debouncedBlur()">
+        <span *ngIf="!chosenPlanet" class="caret"></span>
+    </div>
 
     <!-- dropdowns -->
     <div [hidden]="!isSearchFocused" class="dropdowns">

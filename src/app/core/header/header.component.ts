@@ -12,17 +12,9 @@ import { filter, map } from 'rxjs/operators';
 export class HeaderComponent implements OnInit {
 
     constructor(
-        private findFalconeService: FindFalconeService,
         public router: Router,
-        private renderer: Renderer2,
     ) { }
 
     ngOnInit(): void {
-        this.router.events.pipe(
-            filter(event => event instanceof NavigationEnd)
-        ).subscribe(_ => {
-            this.router.url !== 'find-falcone'
-                && this.renderer.addClass(document.querySelector('#resetButton'), 'hide-reset');
-        });
     }
 }
