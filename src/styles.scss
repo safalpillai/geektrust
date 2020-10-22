@@ -54,12 +54,13 @@ header {
 }
 footer {
     position: fixed;
+    justify-content: center;
     bottom: 0;
     left: 0;
     background: $secondary;
 }
 .router-container {
-    min-height: calc(100vh - 110px);
+    min-height: calc(100vh - 120px);
     margin-bottom: 50px;
     padding: 10px 30px;
     position: relative;

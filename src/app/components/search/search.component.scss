@@ -7,7 +7,7 @@
 
     &:after {
         @include basvg(tick, 12px, 12px, 12px 12px);
-        @include tr(50%, 5px);
+        @include tr(50%, 2px);
         margin-top: -6px;
         display: none;
     }

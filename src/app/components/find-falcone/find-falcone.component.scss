@@ -38,7 +38,7 @@
     text-transform: capitalize;
 
     &.elate {
-        @include material-shadow;
+        @include box-shadow(0, 0, 5px, 0, 0, 0, 0.3);
         color: $grey;
 
         span {
@@ -71,7 +71,7 @@
     .title {
         text-align: center;
         margin-bottom: 40px;
-        color: $b;
+        color: $grey;
         text-transform: capitalize;
         font-size: 1rem;
         position: relative;

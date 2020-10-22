@@ -1,8 +1,5 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { SearchCriteria } from '@models/search-criteria.model';
-import { FindFalconeService } from '@services/find-falcone.service';
-import { filter, map } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-header',
