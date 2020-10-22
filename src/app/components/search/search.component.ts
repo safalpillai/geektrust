@@ -1,6 +1,7 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { IPlanet, IVehicle } from '@models/core.model';
+import { SearchCriteria } from '@models/search-criteria.model';
 import { FindFalconeService } from '@services/find-falcone.service';
 import { Subject } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
@@ -15,6 +16,7 @@ import { SubSink } from 'subsink';
     styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit, OnDestroy {
+    @ViewChild('searchWrapper') searchWrapper: ElementRef;
     @Input() INDEX;
     planets: IPlanet[];
     copyOfPlanets: IPlanet[];
@@ -30,6 +32,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     constructor(
         private findFalconeService: FindFalconeService,
         private formBuilder: FormBuilder,
+        private renderer: Renderer2,
     ) { }
 
     ngOnInit(): void {
@@ -37,6 +40,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.formGroup = this.formBuilder.group({
             vehicleRadio: ['']
         });
+
         // Subscribe to planets
         this.findFalconeService.planets$.subscribe(planets => {
             this.planets = planets;
@@ -68,6 +72,24 @@ export class SearchComponent implements OnInit, OnDestroy {
         // Subscribe to all options array
         this.subsink.sink = this.findFalconeService.options$
             .subscribe(allOptions => this.allOptions = allOptions);
+        
+        // Subscribe to planets reset state
+        this.subsink.sink = this.findFalconeService.resetFindFalconeState.subscribe(_ => {
+            this.chosenPlanet = null;
+            this.search.setValue('');
+            this.isOptionsShown = false;
+            this.renderer.removeClass(this.searchWrapper.nativeElement, 'done');
+
+            // Reset planets
+            this.findFalconeService.planets$.next(
+                JSON.parse(JSON.stringify(this.findFalconeService.pristinePlanets))
+            );
+
+            // Reset all options
+            this.findFalconeService.options$.next(
+                JSON.parse(JSON.stringify(this.findFalconeService.pristineOptions))
+            );
+        });
     }
 
     ngOnDestroy() {
@@ -109,6 +131,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
         // Show options section
         this.isOptionsShown = true;
+        this.formGroup.reset();
     }
 
     /**
@@ -119,6 +142,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.findFalconeService.setVehicleAsSelected(this.INDEX, selected.name);
 
         // Reset all options array
-        this.findFalconeService.resetAllVehicleOptions(this.INDEX);
+        this.findFalconeService.reviseAllVehicleOptions(this.INDEX, selected.name);
     }
 }

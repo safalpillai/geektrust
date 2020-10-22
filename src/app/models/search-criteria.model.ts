@@ -15,6 +15,11 @@ export class SearchCriteria {
         this.previousPlanetState = placeholder.slice();
     }
 
+    /**
+     * Planet helpers
+     * @param index Index to insert newly selected planet
+     * @param name Name of the planet
+     */
     selectPlanet(index: number, name: string) {
         this.setPreviousPlanetState(this.getPlanets().slice());
         this.planet_names[index] = name;
@@ -32,6 +37,11 @@ export class SearchCriteria {
         return this.previousPlanetState;
     }
 
+    /**
+     * 
+     * @param index Index to insert newly selected vehicle
+     * @param name Name of the vehicle
+     */
     selectVehicle(index: number, name: string) {
         this.setPreviousVehicleState(this.getVehicles().slice());
         this.vehicle_names[index] = name;
@@ -49,7 +59,17 @@ export class SearchCriteria {
         return this.previousVehicleState;
     }
 
+    /**
+     * Validate response to toggle find falcone button
+     */
     validateResponse(): boolean {
         return this.planet_names.length == 4 && this.vehicle_names.length == 4;
+    }
+
+    /**
+     * To toggle reset button
+     */
+    hasPlanets(): boolean {
+        return !!this.planet_names.length;
     }
 }

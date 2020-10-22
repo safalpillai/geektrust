@@ -20,17 +20,26 @@ export class FindFalconeComponent implements OnInit {
 
     ngOnInit(): void {
         this.findFalconeService.searchCriteria = new SearchCriteria(localStorage.getItem('apiToken'));
-        // get planets
+        this.renderComponent();
+    }
+
+    /**
+     * Initialize component with API values
+     */
+    renderComponent() {
+        // Get planets
         this.http.get<IPlanet[]>('planets').subscribe(response => {
-            this.findFalconeService.planets$.next(
-                response.map(planet => new Planet(planet))
-            );
+            const planets = response.map(planet => new Planet(planet));
+            this.findFalconeService.pristinePlanets = JSON.parse(JSON.stringify(planets));
+            this.findFalconeService.planets$.next(planets);
         });
-        // get vehicles
+
+        // Get vehicles
         this.http.get<IVehicle[]>('vehicles').subscribe(response => {
             const optionsArray: IVehicle[][] = Array.from({ length: 4 }).map(_ => {
                 return response.map(vehicle => new Vehicle(vehicle));
             });
+            this.findFalconeService.pristineOptions = JSON.parse(JSON.stringify(optionsArray));
             this.findFalconeService.options$.next(optionsArray);
         });
     }

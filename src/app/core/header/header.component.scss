@@ -1,6 +1,7 @@
 @import '~assets/scss/base';
 
-a {
+a, span {
+    cursor: pointer;
     padding: 2px 40px;
     position: relative;
     font-size: 1rem;
@@ -19,6 +20,9 @@ a {
         background: darken($w, 15%);
     }
     &:hover {
-        color: $b;
+        color: $disabled;
     }
+}
+.hide-reset {
+    display: none;
 }

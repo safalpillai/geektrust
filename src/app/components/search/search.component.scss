@@ -88,7 +88,7 @@
     margin: 15px 0;
 
     &.disabled {
-        color: $grey;
+        color: $disabled;
         pointer-events: none;
     }
     input {
