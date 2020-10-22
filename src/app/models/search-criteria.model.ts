@@ -1,3 +1,5 @@
+import { IPlanet, IVehicle } from './core.model';
+
 /**
  * Search criteria for find API (POST)
  */
@@ -6,6 +8,9 @@ export class SearchCriteria {
     private vehicle_names: string[];
     private previousVehicleState: string[];
     private previousPlanetState: string[];
+    private readonly VEHICLES: IVehicle[] = JSON.parse(localStorage.getItem('vehicles'));
+    private readonly PLANETS: IPlanet[] = JSON.parse(localStorage.getItem('planets'));
+    totalTimeTaken = 0;
 
     constructor(private readonly token: string) {
         const placeholder: undefined[] = Array.from({ length: 4 });
@@ -45,6 +50,7 @@ export class SearchCriteria {
     selectVehicle(index: number, name: string) {
         this.setPreviousVehicleState(this.getVehicles().slice());
         this.vehicle_names[index] = name;
+        this.totalTimeTaken = this.calculateTotalTime();
     }
 
     getVehicles(): string[] {
@@ -71,5 +77,26 @@ export class SearchCriteria {
      */
     hasPlanets(): boolean {
         return !!this.planet_names.length;
+    }
+
+    /**
+     * Calculate total time taken based on chosen planets & vehicles
+     */
+    calculateTotalTime(): number {
+        return this.vehicle_names.reduce((previous, current, index) => {
+            !!current && (previous += this.calculateTimeForVehicle(current, index));
+            return previous;
+        }, 0);
+    }
+
+    /**
+     * Calculate time taken for a vehicle to reach associated planet
+     * @param vehicleName Name of vehicle
+     * @param index Index of associated planet in planet_names
+     */
+    calculateTimeForVehicle(vehicleName: string, index: number): number {
+        const selectedVehicle = this.VEHICLES.filter(vehicle => vehicle.name === vehicleName)[0];
+        const selectedPlanet = this.PLANETS.filter(planet => planet.name === this.planet_names[index])[0];
+        return selectedPlanet.distance / selectedVehicle.speed;
     }
 }

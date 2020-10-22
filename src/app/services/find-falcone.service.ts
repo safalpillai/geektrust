@@ -15,11 +15,13 @@ export class FindFalconeService {
     /** Options pool for all 4 searches */
     options$ = new BehaviorSubject<IVehicle[][]>([]);
     /** Reset find falcone component */
-    resetFindFalconeState = new Subject<void>();
+    resetFindFalconeState$ = new Subject<void>();
     private renderer2: Renderer2;
     // For resetting the state
     pristinePlanets: IPlanet[];
     pristineOptions: IVehicle[][];
+    /** Time taken subject */
+    totalTimeTaken$ = new Subject<number>();
 
     constructor(
         private http: BaseHttpService,

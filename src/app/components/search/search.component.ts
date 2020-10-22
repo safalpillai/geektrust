@@ -74,7 +74,7 @@ export class SearchComponent implements OnInit, OnDestroy {
             .subscribe(allOptions => this.allOptions = allOptions);
         
         // Subscribe to planets reset state
-        this.subsink.sink = this.findFalconeService.resetFindFalconeState.subscribe(_ => {
+        this.subsink.sink = this.findFalconeService.resetFindFalconeState$.subscribe(_ => {
             this.chosenPlanet = null;
             this.search.setValue('');
             this.isOptionsShown = false;
@@ -122,9 +122,7 @@ export class SearchComponent implements OnInit, OnDestroy {
                 planet.name === selected.name && (planet.selected = true);
                 return planet;
             });
-        setTimeout(() => {
-            this.findFalconeService.planets$.next(updatedPlanets);
-        });
+        this.findFalconeService.planets$.next(updatedPlanets);
 
         // Set value of search textbox
         this.search.setValue(selected.name);
@@ -140,6 +138,9 @@ export class SearchComponent implements OnInit, OnDestroy {
      */
     selectVehicle(selected: IVehicle) {
         this.findFalconeService.setVehicleAsSelected(this.INDEX, selected.name);
+
+        // Update time taken
+        this.findFalconeService.totalTimeTaken$.next(this.findFalconeService.searchCriteria.totalTimeTaken);
 
         // Reset all options array
         this.findFalconeService.reviseAllVehicleOptions(this.INDEX, selected.name);

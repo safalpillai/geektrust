@@ -21,6 +21,6 @@ export class HeaderComponent implements OnInit {
      */
     resetPlanets() {
         this.findFalconeService.searchCriteria = new SearchCriteria(localStorage.getItem('apiToken'));
-        this.findFalconeService.resetFindFalconeState.next();
+        this.findFalconeService.resetFindFalconeState$.next();
     }
 }
