@@ -43,7 +43,7 @@ export class SearchCriteria {
     }
 
     /**
-     * 
+     * Vehicle helpers 
      * @param index Index to insert newly selected vehicle
      * @param name Name of the vehicle
      */

@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
         private http: BaseHttpService,
     ) {
         // disable logging in production
-        environment.production && (console.log = function () { });
+        environment.production && (console.log = function() { });
     }
 
     ngOnInit() {

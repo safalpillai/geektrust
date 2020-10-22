@@ -69,7 +69,7 @@ export class FindFalconeComponent implements OnInit, OnDestroy {
     sendResponse() {
         const { token, planet_names, vehicle_names } = this.findFalconeService.searchCriteria;
         this.http.post('find', { token, planet_names, vehicle_names }).subscribe((response: IResult) => {
-            if (response.status === 'success') this.router.navigate(['/result', { 'planet': response.planet_name }]);
+            if (response.status === 'success') this.router.navigate(['/result', { planet: response.planet_name }]);
             else this.router.navigate(['/result']);
         });
     }

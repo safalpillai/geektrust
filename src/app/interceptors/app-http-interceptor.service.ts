@@ -17,12 +17,9 @@ export class AppHttpInterceptorService implements HttpInterceptor {
         req: HttpRequest<any>,
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
-        const geekTrustToken = localStorage.getItem('apiToken');
         let headers = new HttpHeaders();
         headers = headers.append('Accept', 'application/json');
-        const authorizedRequest = req.clone({
-            headers: headers
-        });
+        const authorizedRequest = req.clone({ headers });
         return next.handle(authorizedRequest).pipe(
             catchError(this.handleAppError.bind(this))
         );

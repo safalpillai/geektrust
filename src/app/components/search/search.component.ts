@@ -75,14 +75,14 @@ export class SearchComponent implements OnInit, OnDestroy {
         
         // Subscribe to planets reset state
         this.subsink.sink = this.findFalconeService.resetFindFalconeState$.subscribe(_ => {
-            // Hide reset button
-            this.renderer.addClass(document.querySelector('#resetButton'), 'hide-reset');
-            
             this.chosenPlanet = null;
             this.search.setValue('');
             this.isOptionsShown = false;
             this.renderer.removeClass(this.searchWrapper.nativeElement, 'done');
 
+            // Hide reset button
+            this.renderer.addClass(document.querySelector('#resetButton'), 'hide-reset');
+            
             // Reset time
             this.findFalconeService.totalTimeTaken$.next(0);
 

@@ -8,20 +8,27 @@ import { BaseHttpService } from './base-http.service';
     providedIn: 'root'
 })
 export class FindFalconeService {
-    /** Object for find POST API  */
-    searchCriteria: SearchCriteria;
+    private renderer: Renderer2;
+
     // For resetting the planets & vehicles state
     pristinePlanets: IPlanet[];
     pristineOptions: IVehicle[][];
+
+    /** Object for find POST API  */
+    searchCriteria: SearchCriteria;
+    
     /** Planets array which holds selected planets */
     planets$ = new BehaviorSubject<IPlanet[]>([]);
+
     /** Options pool for all 4 searches */
     options$ = new BehaviorSubject<IVehicle[][]>([]);
+
     /** Reset find falcone component */
     resetFindFalconeState$ = new Subject<void>();
-    private renderer: Renderer2;
-    /** Time taken subject */
+
+    /** Total time taken subject */
     totalTimeTaken$ = new Subject<number>();
+    
     /** Find falcone button status */
     isResponseValid$ = new Subject<boolean>();
 
@@ -71,7 +78,11 @@ export class FindFalconeService {
                     selectedVehicles.includes(vehicle.name)
                     && vehicleName === vehicle.name
                     && vehicle.total_no
-                ) vehicle.total_no--;
+                ) {
+                    vehicle.total_no--;
+                }
+
+                // Increment previously selected vehicle's quantity
                 if (alreadySelected && vehicle.name === alreadySelected) vehicle.total_no++;
             });
             return vehicleArray;
