@@ -20,9 +20,6 @@ export class AppHttpInterceptorService implements HttpInterceptor {
         const geekTrustToken = localStorage.getItem('apiToken');
         let headers = new HttpHeaders();
         headers = headers.append('Accept', 'application/json');
-        // append token in request header, only when submitting results
-        (geekTrustToken && req.url.includes('.com/find'))
-            && (headers = headers.append('token', geekTrustToken));
         const authorizedRequest = req.clone({
             headers: headers
         });

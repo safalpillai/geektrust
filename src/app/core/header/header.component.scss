@@ -1,26 +1,23 @@
 @import '~assets/scss/base';
 
-a, span {
+$bg: rgba(255, 255, 255, 0.4);
+
+a {
     cursor: pointer;
-    padding: 2px 40px;
+    padding: 4px 35px;
     position: relative;
     font-size: 1rem;
     color: $w;
     display: block;
     text-transform: capitalize;
+    margin-right: 10px;
 
-    &:first-child {
-        padding-left: 0;
-    }
-    &:not(:first-child):before {
-        @include tl(0, 0);
-        content: '';
-        width: 1px;
-        height: 100%;
-        background: darken($w, 15%);
-    }
     &:hover {
         color: $disabled;
+    }
+    &.active{
+        pointer-events: none;
+        background: $bg;
     }
 }
 .hide-reset {

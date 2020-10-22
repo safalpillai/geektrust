@@ -26,3 +26,8 @@
         <span>{{ totalTime }} <em>hrs</em></span>
     </div>
 </section>
+
+<!-- find falcone button -->
+<section style="margin-top: 50px; text-align: center;">
+    <a *ngIf="isButtonShown" (click)="sendResponse()" class="link" href="javascript:void(0)">Find Falcone!</a>
+</section>

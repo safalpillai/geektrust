@@ -32,7 +32,7 @@ export class BaseHttpService {
      * @param payload Payload requested by POST API
      * @param option HTTP POST options
      */
-    post<T>(endPoint: string, payload?: any, option = {}): Observable<T> {
-        return this.httpClient.post<T>(`${this.apiUrl}${endPoint}`, payload, option);
+    post(endPoint: string, payload?: any, option = {}): Observable<any> {
+        return this.httpClient.post(`${this.apiUrl}${endPoint}`, payload, option);
     }
 }

@@ -4,15 +4,15 @@ import { IPlanet, IVehicle } from './core.model';
  * Search criteria for find API (POST)
  */
 export class SearchCriteria {
-    private planet_names: string[];
-    private vehicle_names: string[];
+    planet_names: string[];
+    vehicle_names: string[];
     private previousVehicleState: string[];
     private previousPlanetState: string[];
     private readonly VEHICLES: IVehicle[] = JSON.parse(localStorage.getItem('vehicles'));
     private readonly PLANETS: IPlanet[] = JSON.parse(localStorage.getItem('planets'));
     totalTimeTaken = 0;
 
-    constructor(private readonly token: string) {
+    constructor(readonly token: string) {
         const placeholder: undefined[] = Array.from({ length: 4 });
         this.planet_names = placeholder.slice();
         this.vehicle_names = placeholder.slice();
@@ -69,7 +69,7 @@ export class SearchCriteria {
      * Validate response to toggle find falcone button
      */
     validateResponse(): boolean {
-        return this.planet_names.length == 4 && this.vehicle_names.length == 4;
+        return this.planet_names.concat(this.vehicle_names).every(value => !!value);
     }
 
     /**

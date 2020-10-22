@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.http.post<IAppToken>('token').subscribe(response => {
+        this.http.post('token').subscribe((response: IAppToken) => {
             localStorage.removeItem('apiToken');
             localStorage.setItem('apiToken', response.token);
         });

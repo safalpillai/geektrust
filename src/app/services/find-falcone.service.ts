@@ -10,24 +10,26 @@ import { BaseHttpService } from './base-http.service';
 export class FindFalconeService {
     /** Object for find POST API  */
     searchCriteria: SearchCriteria;
+    // For resetting the planets & vehicles state
+    pristinePlanets: IPlanet[];
+    pristineOptions: IVehicle[][];
     /** Planets array which holds selected planets */
     planets$ = new BehaviorSubject<IPlanet[]>([]);
     /** Options pool for all 4 searches */
     options$ = new BehaviorSubject<IVehicle[][]>([]);
     /** Reset find falcone component */
     resetFindFalconeState$ = new Subject<void>();
-    private renderer2: Renderer2;
-    // For resetting the state
-    pristinePlanets: IPlanet[];
-    pristineOptions: IVehicle[][];
+    private renderer: Renderer2;
     /** Time taken subject */
     totalTimeTaken$ = new Subject<number>();
+    /** Find falcone button status */
+    isResponseValid$ = new Subject<boolean>();
 
     constructor(
         private http: BaseHttpService,
         private rendererFactory: RendererFactory2,
     ) {
-        this.renderer2 = this.rendererFactory.createRenderer(null, null);
+        this.renderer = this.rendererFactory.createRenderer(null, null);
     }
     
     /**
@@ -38,10 +40,9 @@ export class FindFalconeService {
     setPlanetAsSelected(index: number, name: string) {
         this.searchCriteria.selectPlanet(index, name);
 
-        // Toggle reset button
-        const resetButton = document.querySelector('#resetButton') as HTMLElement;
+        // Show reset button
         this.searchCriteria.hasPlanets()
-            && this.renderer2.removeClass(resetButton, 'hide-reset');
+            && this.renderer.removeClass(document.querySelector('#resetButton'), 'hide-reset');
     }
     
     /**
@@ -51,6 +52,9 @@ export class FindFalconeService {
      */
     setVehicleAsSelected(index: number, name: string) {
         this.searchCriteria.selectVehicle(index, name);
+
+        // Toggle find falcone button
+        this.isResponseValid$.next(this.searchCriteria.validateResponse());
     }
 
     /**
