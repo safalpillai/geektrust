@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
 
     constructor(
         private findFalconeService: FindFalconeService,
-        private router: Router,
+        public router: Router,
         private renderer: Renderer2,
     ) { }
 
