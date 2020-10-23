@@ -5,7 +5,7 @@ import { IPlanet, IVehicle, IResult } from '@models/core.model';
 import { Planet } from '@models/planet.model';
 import { Vehicle } from '@models/vehicle.model';
 import { SearchCriteria } from '@models/search-criteria.model';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -25,7 +25,6 @@ export class FindFalconeComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit(): void {
-        this.findFalconeService.searchCriteria = new SearchCriteria(localStorage.getItem('apiToken'));
         this.renderComponent();
 
         // Subscribe to total time taken value
@@ -44,23 +43,28 @@ export class FindFalconeComponent implements OnInit, OnDestroy {
      * Initialize component with API values
      */
     renderComponent() {
-        // Get planets
-        this.http.get<IPlanet[]>('planets').subscribe((response: IPlanet[]) => {
-            localStorage.setItem('planets', JSON.stringify(response));
-            const planets = response.map(planet => new Planet(planet));
+        forkJoin(
+            [
+                this.http.get<IPlanet[]>('planets'),
+                this.http.get<IVehicle[]>('vehicles')
+            ]
+        ).subscribe(responses => {
+            // Set planets
+            localStorage.setItem('planets', JSON.stringify(responses[0]));
+            const planets = responses[0].map(planet => new Planet(planet));
             this.findFalconeService.pristinePlanets = JSON.parse(JSON.stringify(planets));
             this.findFalconeService.planets$.next(planets);
-        });
 
-        // Get vehicles
-        this.http.get<IVehicle[]>('vehicles').subscribe((response: IVehicle[]) => {
-            localStorage.setItem('vehicles', JSON.stringify(response));
+            // Set vehicles
+            localStorage.setItem('vehicles', JSON.stringify(responses[1]));
             const optionsArray: IVehicle[][] = Array.from({ length: 4 }).map(_ => {
-                return response.map(vehicle => new Vehicle(vehicle));
+                return responses[1].map(vehicle => new Vehicle(vehicle));
             });
             this.findFalconeService.pristineOptions = JSON.parse(JSON.stringify(optionsArray));
             this.findFalconeService.options$.next(optionsArray);
-        });
+
+            this.findFalconeService.searchCriteria = new SearchCriteria(localStorage.getItem('apiToken'));
+        })
     }
 
     /**
