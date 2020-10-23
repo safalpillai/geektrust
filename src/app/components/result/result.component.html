@@ -1,1 +1,9 @@
-<p>result works!</p>
+<section *ngIf="isFound" class="common-container">
+    <p>Mission accomplished. Falcone was found on planet - <strong>{{ planet }} !!</strong></p>
+    <a class="link" routerLink="/find-falcone">Play Again</a>
+</section>
+
+<section *ngIf="!isFound" class="common-container">
+    <p>Mission failed. Falcone was nowhere to be seen!</p>
+    <a class="link" routerLink="/find-falcone">Try Again</a>
+</section>

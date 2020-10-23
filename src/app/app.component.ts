@@ -14,11 +14,11 @@ export class AppComponent implements OnInit {
         private http: BaseHttpService,
     ) {
         // disable logging in production
-        environment.production && (console.log = function () { });
+        environment.production && (console.log = function() { });
     }
 
     ngOnInit() {
-        this.http.post<IAppToken>('token').subscribe(response => {
+        this.http.post('token').subscribe((response: IAppToken) => {
             localStorage.removeItem('apiToken');
             localStorage.setItem('apiToken', response.token);
         });

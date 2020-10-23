@@ -25,10 +25,10 @@ export interface IVehicle {
 }
 
 /**
- * POST body of find API
+ * Result API
  */
-export interface IFindFalcone {
-    token: string;
-    planet_names: string[];
-    vehicle_names: string[];
+export interface IResult {
+    status: 'success' | 'false';
+    planet_name?: string;
+    error?: string;
 }

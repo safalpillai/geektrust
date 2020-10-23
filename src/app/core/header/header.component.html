@@ -1,4 +1,7 @@
 <header>
-    <a routerLink="/start" href="">start</a>
-    <a *ngIf="false" href="">reset</a>
+    <a routerLink="/start" routerLinkActive="active" href="javascript:void(0)">start</a>
+    <a *ngIf="router.url.includes('/find-falcone')" routerLink="/find-falcone" routerLinkActive="active"
+        href="javascript:void(0)">find falcone</a>
+    <a *ngIf="router.url.includes('/result')" routerLink="/result" routerLinkActive="active"
+        href="javascript:void(0)">Result</a>
 </header>

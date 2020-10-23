@@ -24,11 +24,11 @@ button:hover, button:active, button:focus {
     box-shadow: none !important;
 }
 a {
-    @include transit(1s);
+    @include transit(.8s);
     text-decoration: none;
 
     * {
-        @include transit(1s);
+        @include transit(.8s);
     }
     &:hover {
         text-decoration: none;
@@ -54,12 +54,13 @@ header {
 }
 footer {
     position: fixed;
+    justify-content: center;
     bottom: 0;
     left: 0;
     background: $secondary;
 }
 .router-container {
-    min-height: calc(100vh - 110px);
+    min-height: calc(100vh - 120px);
     margin-bottom: 50px;
     padding: 10px 30px;
     position: relative;
@@ -67,15 +68,41 @@ footer {
     background: $w;
 }
 .link {
-    @include box-shadow(0, 5px, 5px, 0, 0, 0, 0.3);
+    @include transit(0.3s);
+    @include radius(4px);
+    @include box-shadow(0, 3px, 5px, 0, 0, 0, 0.3);
     display: inline-block;
-    padding: 15px 40px;
-    background: $primary;
+    width: 250px;
+    padding: 15px 0;
+    background: lighten($primary, 20%);
     color: $w;
     text-transform: capitalize;
 
     &:hover {
         @include box-shadow(0, 0, 5px, 0, 0, 0, 0.3);
-        background: $secondary;
+        background: $primary;
+    }
+    &.ml {
+        margin-left: 20px;
+    }
+}
+.common-container {
+    width: 100%;
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    p {
+        font-size: 1.2rem;
+        color: $grey;
+        margin: 0 0 30px;
+        padding: 0 20%;
+        line-height: 35px;
+    }
+    strong {
+        font-size: 1.5rem;
     }
 }

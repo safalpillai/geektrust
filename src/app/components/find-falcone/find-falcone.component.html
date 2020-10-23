@@ -1,6 +1,14 @@
 <section class="title-section">
-    <p>Finding Falcone</p>
-    <span>Select planets you want to search in:</span>
+    <!-- title -->
+    <div style="margin: auto;">
+        <p>Finding Falcone</p>
+        <span>Select planets you want to search in:</span>
+    </div>
+    <!--  time taken -->
+    <div class="time-taken" [class.elate]="totalTime">
+        <p>Time Taken</p>
+        <span>{{ totalTime }} <em>hrs</em></span>
+    </div>
 </section>
 
 <section class="flex-container">
@@ -20,4 +28,12 @@
         <div class="title">Destination 4</div>
         <app-search [INDEX]="3"></app-search>
     </div>
+    
+</section>
+
+<section style="margin: 50px 0; text-align: center;">
+    <!-- reset button -->
+    <a (click)="resetState()" class="link hide-reset" id="resetButton" href="javascript:void(0)">reset</a>
+    <!-- find falcone button -->
+    <a *ngIf="isButtonShown" (click)="sendResponse()" class="link ml" href="javascript:void(0)">Find Falcone!</a>
 </section>

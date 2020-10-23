@@ -1,7 +1,10 @@
-<section class="search-container" [class.done]="chosenPlanet && !isSearchFocused">
+<section class="search-container" #searchWrapper [class.done]="chosenPlanet && !isSearchFocused">
     <!-- search textbox -->
-    <input #searchInput [formControl]="search" type="text" placeholder="Search Planets" spellcheck="false"
-        (focus)="isSearchFocused = true" (blur)="debouncedBlur()">
+    <div style="position: relative">
+        <input #searchInput [formControl]="search" type="text" placeholder="Choose one" spellcheck="false"
+            (focus)="isSearchFocused = true" (blur)="debouncedBlur()">
+        <span *ngIf="!chosenPlanet" class="caret"></span>
+    </div>
 
     <!-- dropdowns -->
     <div [hidden]="!isSearchFocused" class="dropdowns">
@@ -21,7 +24,7 @@
             <div class="options-flex"
                 [class.disabled]="!vehicle.total_no 
                 || (chosenPlanet.distance > vehicle.max_distance)">
-                <input (change)="selectVehicle(vehicle)" type="radio" 
+                <input (change)="selectVehicle(vehicle)" type="radio" [checked]="false"
                     [value]="vehicle.name" formControlName="vehicleRadio">
                 <span>{{ vehicle.name }}</span>
                 <span>({{ vehicle.total_no }})</span>

@@ -7,7 +7,7 @@
 
     &:after {
         @include basvg(tick, 12px, 12px, 12px 12px);
-        @include tr(50%, 5px);
+        @include tr(50%, 2px);
         margin-top: -6px;
         display: none;
     }
@@ -88,7 +88,7 @@
     margin: 15px 0;
 
     &.disabled {
-        color: $grey;
+        color: $disabled;
         pointer-events: none;
     }
     input {
@@ -103,4 +103,12 @@
             margin-left: 4px;
         }
     }
+}
+.caret {
+    @include tr(50%, 0);
+    border-left: 5px solid $t;
+    border-right: 5px solid $t;
+    border-top: 5px solid $grey;
+    pointer-events: none;
+    margin-top: -3px;
 }

@@ -1,24 +1,41 @@
 @import '~assets/scss/base';
 
+$bg: rgba(255, 255, 255, 0.1);
+
 a {
-    padding: 2px 40px;
+    cursor: pointer;
+    padding: 6px 35px;
     position: relative;
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: $w;
     display: block;
     text-transform: capitalize;
+    margin-right: 10px;
 
-    &:first-child {
-        padding-left: 0;
-    }
-    &:not(:first-child):before {
-        @include tl(0, 0);
+    &:before, &:after {
+        @include transition;
+        position: absolute;
+        bottom: 0;
+        width: 0;
+        height: 1px;
+        background:  rgba(255, 255, 255, 0.3);
         content: '';
-        width: 1px;
-        height: 100%;
-        background: darken($w, 15%);
+    }
+    &:before {
+        left: 50%;
+    }
+    &:after {
+        right: 50%;
     }
     &:hover {
-        color: $b;
+        color: $disabled;
+
+        &:before, &:after {
+            width: 20px;
+        }
+    }
+    &.active{
+        pointer-events: none;
+        background: $bg;
     }
 }
