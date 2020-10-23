@@ -46,7 +46,7 @@ describe('SearchCriteria', () => {
         Object.defineProperty(searchCriteria, 'PLANETS', { value: PLANETS, writable: true });
     });
 
-    it('should have planet', () => {
+    it('should have planet pluto', () => {
         searchCriteria.selectPlanet(2, 'pluto');
         expect(searchCriteria.planet_names[2]).toBe('pluto');
     });
@@ -59,16 +59,16 @@ describe('SearchCriteria', () => {
         expect(searchCriteria.token).toBeTruthy();
     });
     
-    it('should have time taken for a vehicle to be 10', () => {
+    it('calculateTimeForVehicle() should return 10', () => {
         expect(searchCriteria.calculateTimeForVehicle('starfighter', 0)).toBeTruthy(10);
     });
 
-    it('should have total time taken to be 20', () => {
+    it('calculateTotalTime() should return 10', () => {
         expect(searchCriteria.calculateTotalTime()).toBeTruthy(10);
     });
 
-    it('should have 2 planets', () => {
-        expect(searchCriteria.hasPlanets()).toBeTruthy(10);
+    it('hasPlanets() should return 2 planets', () => {
+        expect(searchCriteria.hasPlanets()).toBeTruthy(2);
     });
 
     it('should have invalid response', () => {
