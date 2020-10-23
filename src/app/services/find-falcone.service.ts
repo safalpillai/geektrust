@@ -20,7 +20,7 @@ export class FindFalconeService {
     /** Planets array which holds selected planets */
     planets$ = new BehaviorSubject<IPlanet[]>([]);
 
-    /** Options pool for all 4 searches */
+    /** Dropdown options pool set for all 4 searches textboxes */
     options$ = new BehaviorSubject<IVehicle[][]>([]);
 
     /** Reset find falcone component */
@@ -33,7 +33,6 @@ export class FindFalconeService {
     isResponseValid$ = new Subject<boolean>();
 
     constructor(
-        private http: BaseHttpService,
         private rendererFactory: RendererFactory2,
     ) {
         this.renderer = this.rendererFactory.createRenderer(null, null);
@@ -90,7 +89,7 @@ export class FindFalconeService {
     }
 
     /**
-     * Options to show in each search component
+     * Set dropdown options to show in each search component
      * @param index To check if value exists in this index
      */
     reviseAllVehicleOptions(index: number, vehicleName: string) {

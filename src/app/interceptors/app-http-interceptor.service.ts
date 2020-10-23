@@ -1,5 +1,6 @@
 import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, ObservableInput, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -11,7 +12,9 @@ import { catchError } from 'rxjs/operators';
 })
 export class AppHttpInterceptorService implements HttpInterceptor {
 
-    constructor() { }
+    constructor(
+        private router: Router,
+    ) { }
 
     intercept(
         req: HttpRequest<any>,
@@ -30,7 +33,11 @@ export class AppHttpInterceptorService implements HttpInterceptor {
      * @param error Error object sent from API
      */
     handleAppError(error): ObservableInput<any> {
-        error?.error && console.error(`Error! - ${JSON.stringify(error, null, 3)}`);
+        // Error shown without any toast service
+        if (error?.error) {
+            alert(`Error shown without any toast service - ${JSON.stringify(error.error, null, 3)}`);
+            this.router.navigate(['/start']);
+        }
         return throwError(error);
     }
 }

@@ -4,22 +4,22 @@ import { IPlanet, IVehicle } from './core.model';
  * Search criteria for find API (POST)
  */
 export class SearchCriteria {
-    // Selected planet names
+    /** Selected planet names */
     planet_names: string[];
 
-    // Selected vehicle names
+    /** Selected vehicle names */
     vehicle_names: string[];
 
-    // To check whether the vehicle state change is in the same index
+    /** To check whether the vehicle state change is in the same index */
     private previousVehicleState: string[];
     
-    // To check whether the planets state change is in the same index
+    /** To check whether the planets state change is in the same index */
     private previousPlanetState: string[];
 
-    // Get vehicles reference to calculate total time
+    /** Get vehicles reference to calculate total time */
     private readonly VEHICLES: IVehicle[] = JSON.parse(localStorage.getItem('vehicles'));
 
-    // Get planets reference to calculate total time
+    /** Get planets reference to calculate total time */
     private readonly PLANETS: IPlanet[] = JSON.parse(localStorage.getItem('planets'));
     
     totalTimeTaken = 0;
