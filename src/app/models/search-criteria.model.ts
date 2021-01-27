@@ -42,17 +42,13 @@ export class SearchCriteria {
         this.planet_names[index] = name;
     }
 
-    getPlanets(): string[] {
-        return this.planet_names;
-    }
+    getPlanets = (): string[] => this.planet_names;
 
     private setPreviousPlanetState(vehicleState: string[]) {
         this.previousPlanetState = vehicleState;
     }
 
-    getPreviousPlanetState(): string[] {
-        return this.previousPlanetState;
-    }
+    getPreviousPlanetState = (): string[] => this.previousPlanetState;
 
     /**
      * Vehicle helpers 
@@ -65,31 +61,23 @@ export class SearchCriteria {
         this.totalTimeTaken = this.calculateTotalTime();
     }
 
-    getVehicles(): string[] {
-        return this.vehicle_names;
-    }
+    getVehicles = (): string[] => this.vehicle_names;
 
     private setPreviousVehicleState(vehicleState: string[]) {
         this.previousVehicleState = vehicleState;
     }
 
-    getPreviousVehicleState(): string[] {
-        return this.previousVehicleState;
-    }
+    getPreviousVehicleState = (): string[] => this.previousVehicleState;
 
     /**
      * Validate response to toggle find falcone button
      */
-    validateResponse(): boolean {
-        return this.planet_names.concat(this.vehicle_names).every(value => !!value);
-    }
+    validateResponse = (): boolean => this.planet_names.concat(this.vehicle_names).every(value => !!value);
 
     /**
      * To toggle reset button
      */
-    hasPlanets(): boolean {
-        return !!this.planet_names.length;
-    }
+    hasPlanets = (): boolean => !!this.planet_names.length;
 
     /**
      * Calculate total time taken based on chosen planets & vehicles
