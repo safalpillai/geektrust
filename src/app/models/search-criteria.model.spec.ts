@@ -54,11 +54,11 @@ describe('SearchCriteria', () => {
     it('should have 2 planets, 2 undefined slots', () => {
         expect(searchCriteria.getPlanets().length).toBe(4);
     });
-    
+
     it('should have api token during initialization', () => {
         expect(searchCriteria.token).toBeTruthy();
     });
-    
+
     it('calculateTimeForVehicle() should return 10', () => {
         expect(searchCriteria.calculateTimeForVehicle('starfighter', 0)).toBeTruthy(10);
     });
@@ -80,7 +80,7 @@ describe('SearchCriteria', () => {
     });
 
     it('should have vehicle himalayan', () => {
-        searchCriteria.selectPlanet(2, 'pluto')
+        searchCriteria.selectPlanet(2, 'pluto');
         searchCriteria.selectVehicle(2, 'himalayan');
         expect(searchCriteria.vehicle_names[2]).toBe('himalayan');
     });

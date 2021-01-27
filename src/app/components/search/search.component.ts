@@ -72,7 +72,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         // Subscribe to all options array
         this.subsink.sink = this.findFalconeService.options$
             .subscribe(allOptions => this.allOptions = allOptions);
-        
+
         // Subscribe to planets reset state
         this.subsink.sink = this.findFalconeService.resetFindFalconeState$.subscribe(_ => {
             this.chosenPlanet = null;
@@ -82,7 +82,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
             // Hide reset button
             this.renderer.addClass(document.querySelector('#resetButton'), 'hide-reset');
-            
+
             // Reset time
             this.findFalconeService.totalTimeTaken$.next(0);
 
@@ -125,6 +125,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         // Update planets array with selections
         const updatedPlanets: IPlanet[] = this.copyOfPlanets
             .map(planet => {
+                /* tslint:disable */
                 planet.name === selected.name && (planet.selected = true);
                 return planet;
             });

@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '@environments/environment';
 
 /**
  * Wrappers for HTTP methods
@@ -10,13 +9,11 @@ import { environment } from '@environments/environment';
     providedIn: 'root'
 })
 export class BaseHttpService {
-    apiUrl: string;
 
     constructor(
-        private httpClient: HttpClient,
-    ) {
-        this.apiUrl = environment.apiEndpoint;
-    }
+        @Inject('BASE_URL') private readonly apiUrl: string,
+        private readonly httpClient: HttpClient,
+    ) {}
 
     /**
      * Default GET method

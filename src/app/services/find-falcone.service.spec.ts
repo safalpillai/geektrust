@@ -4,7 +4,7 @@ import { FindFalconeService } from './find-falcone.service';
 
 describe('FindFalconeService', () => {
     let service: FindFalconeService;
-    
+
     beforeEach(() => {
         const VEHICLES = [
             {

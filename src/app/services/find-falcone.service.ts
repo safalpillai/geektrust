@@ -2,7 +2,6 @@ import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { IPlanet, IVehicle } from '@models/core.model';
 import { SearchCriteria } from '@models/search-criteria.model';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { BaseHttpService } from './base-http.service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +15,7 @@ export class FindFalconeService {
 
     /** Object for find POST API  */
     searchCriteria: SearchCriteria;
-    
+
     /** Planets array which holds selected planets */
     planets$ = new BehaviorSubject<IPlanet[]>([]);
 
@@ -28,7 +27,7 @@ export class FindFalconeService {
 
     /** Total time taken subject */
     totalTimeTaken$ = new Subject<number>();
-    
+
     /** Find falcone button status */
     isResponseValid$ = new Subject<boolean>();
 
@@ -37,7 +36,7 @@ export class FindFalconeService {
     ) {
         this.renderer = this.rendererFactory.createRenderer(null, null);
     }
-    
+
     /**
      * Set planet as selected in SearchCriteria.planet_names
      * @param index Index of insertion in SearchCriteria.planet_names
@@ -47,10 +46,11 @@ export class FindFalconeService {
         this.searchCriteria.selectPlanet(index, name);
 
         // Show reset button
+        /* tslint:disable */
         this.searchCriteria.hasPlanets()
             && this.renderer.removeClass(document.querySelector('#resetButton'), 'hide-reset');
     }
-    
+
     /**
      * Set vehicle as selected in SearchCriteria.vehicle_names
      * @param index Index of insertion in SearchCriteria.vehicle_names

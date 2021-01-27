@@ -1,34 +1,42 @@
 /**
+ * Environment type
+ */
+export type IEnvironment = {
+    production: boolean;
+    apiEndpoint: string;
+};
+
+/**
  * API token generated from GeekTrust
  */
-export interface IAppToken {
+export type IAppToken = {
     token: string;
-}
+};
 
 /**
  * Planet details
  */
-export interface IPlanet {
+export type IPlanet = {
     name: string;
     distance: number;
     selected?: boolean;
-}
+};
 
 /**
  * Spacecrafts details
  */
-export interface IVehicle {
+export type IVehicle = {
     name: string;
     total_no: number;
     max_distance: number;
     speed: number;
-}
+};
 
 /**
  * Result API
  */
-export interface IResult {
+export type IResult = {
     status: 'success' | 'false';
     planet_name?: string;
     error?: string;
-}
+};
