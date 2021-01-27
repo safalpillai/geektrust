@@ -17,6 +17,7 @@ export class ResultComponent implements OnInit {
     ngOnInit(): void {
         this.activatedRoute.paramMap.subscribe(result => {
             this.isFound = result.has('planet');
+            /* tslint:disable */
             this.isFound && (this.planet = result.get('planet'));
         });
     }

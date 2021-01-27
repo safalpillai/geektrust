@@ -12,7 +12,7 @@ export class SearchCriteria {
 
     /** To check whether the vehicle state change is in the same index */
     private previousVehicleState: string[];
-    
+
     /** To check whether the planets state change is in the same index */
     private previousPlanetState: string[];
 
@@ -21,7 +21,7 @@ export class SearchCriteria {
 
     /** Get planets reference to calculate total time */
     private readonly PLANETS: IPlanet[] = JSON.parse(localStorage.getItem('planets'));
-    
+
     totalTimeTaken = 0;
 
     constructor(readonly token: string) {
@@ -51,7 +51,7 @@ export class SearchCriteria {
     getPreviousPlanetState = (): string[] => this.previousPlanetState;
 
     /**
-     * Vehicle helpers 
+     * Vehicle helpers
      * @param index Index to insert newly selected vehicle
      * @param name Name of the vehicle
      */
@@ -84,6 +84,7 @@ export class SearchCriteria {
      */
     calculateTotalTime(): number {
         return this.vehicle_names.reduce((previous, current, index) => {
+            /* tslint:disable */
             !!current && (previous += this.calculateTimeForVehicle(current, index));
             return previous;
         }, 0);

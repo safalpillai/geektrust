@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
         private http: BaseHttpService,
     ) {
         // disable logging in production
+        /* tslint:disable */
         environment.production && (console.log = function() { });
     }
 
