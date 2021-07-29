@@ -7,6 +7,7 @@
     font-family: 'Roboto', sans-serif;
 }
 body {
+    width: 100%;
     margin: 0;
     font-size: 16px;
 }
@@ -17,8 +18,8 @@ body {
 ::-webkit-scrollbar-thumb {
     background: #c1c1c1;
 }
-select:hover, select:active, select:focus, 
-input:hover, input:active, input:focus, 
+select:hover, select:active, select:focus,
+input:hover, input:active, input:focus,
 button:hover, button:active, button:focus {
     outline: 0 !important;
     box-shadow: none !important;
