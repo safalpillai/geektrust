@@ -11,9 +11,9 @@
     },
     "private": true,
     "husky": {
-      "hooks": {
-        "pre-commit": "ng lint"
-      }
+        "hooks": {
+            "pre-commit": "ng lint"
+        }
     },
     "dependencies": {
         "@angular/animations": "^9.1.12",
