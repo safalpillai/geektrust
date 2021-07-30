@@ -8,6 +8,29 @@
 }
 .flex-container {
     justify-content: space-between;
+
+    .flex-child {
+        width: 25%;
+        margin: 0 20px;
+
+        .title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: $grey;
+            text-transform: capitalize;
+            font-size: 1rem;
+            position: relative;
+
+            &:after {
+                @include bl(-8px, 50%);
+                content: '';
+                width: 50px;
+                height: 0.5px;
+                margin-left: -25px;
+                background: rgba(0, 0, 0, 0.15);
+            }
+        }
+    }
 }
 .title-section {
     justify-content: flex-end;
@@ -24,6 +47,9 @@
     span {
         color: $grey;
         display: block;
+    }
+    div:first-child {
+        margin: auto;
     }
 }
 .link {
@@ -64,25 +90,42 @@
 .hide-reset {
     display: none;
 }
-.flex-child {
-    width: 25%;
-    margin: 0 20px;
+@media screen and (max-width: 1200px) {
+    .title-section {
+        flex-direction: column;
+        place-items: center;
 
-    .title {
-        text-align: center;
-        margin-bottom: 40px;
-        color: $grey;
-        text-transform: capitalize;
-        font-size: 1rem;
-        position: relative;
-
-        &:after {
-            @include bl(-8px, 50%);
-            content: '';
-            width: 50px;
-            height: 0.5px;
-            margin-left: -25px;
-            background: rgba(0, 0, 0, 0.15);
+        div:first-child {
+            margin: 0 0 30px;
         }
+        .time-taken {
+            position: relative;
+            bottom: auto;
+            right: auto;
+        }
+    }
+    .flex-container {
+        flex-direction: column;
+        place-items: center;
+
+        .flex-child {
+            margin: 20px 0;
+            width: 65%;
+        }
+    }
+}
+@media screen and (max-width: 768px) {
+    .flex-container {
+        width: 100%;
+
+        .flex-child {
+            width: 100%;
+        }
+    }
+}
+@media screen and (max-width: 500px) {
+    .link {
+        width: 100%;
+        margin: 0 0 15px;
     }
 }

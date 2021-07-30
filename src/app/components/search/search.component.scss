@@ -6,7 +6,7 @@
     cursor: pointer;
 
     &:after {
-        @include basvg(tick, 12px, 12px, 12px 12px);
+        @include before-svg(tick, 12px, 12px, 12px 12px);
         @include tr(50%, 2px);
         margin-top: -6px;
         display: none;
@@ -55,23 +55,28 @@
                 margin-top: -6px;
             }
             &:before {
-                @include basvg(planet, 12px, 12px, 12px 12px);
+                @include transit(0.3s);
+                @include before-svg(planet, 12px, 12px, 12px 12px);
                 left: 15px;
             }
             &:after {
-                @include basvg(tick, 12px, 12px, 12px 12px);
+                @include before-svg(tick, 12px, 12px, 12px 12px);
                 right: 15px;
                 display: none;
             }
             &:hover {
-                background: $disabled;
+                background: darken($disabled, 5%);
+
+                &:before {
+                    transform: scale(1.65);
+                }
             }
             &.selected {
                 pointer-events: none;
                 color: $grey;
 
                 &:before {
-                    @include basvg(planet-disabled, 12px, 12px, 12px 12px);
+                    @include before-svg(planet-disabled, 12px, 12px, 12px 12px);
                 }
                 &:after {
                     display: block;
@@ -111,4 +116,10 @@
     border-top: 5px solid $grey;
     pointer-events: none;
     margin-top: -3px;
+}
+
+@media screen and (max-width: 1200px) {
+    .dropdowns {
+        z-index: 100;
+    }
 }

@@ -1,6 +1,6 @@
 <section class="title-section">
     <!-- title -->
-    <div style="margin: auto;">
+    <div>
         <p>Finding Falcone</p>
         <span>Select planets you want to search in:</span>
     </div>
@@ -28,12 +28,12 @@
         <div class="title">Destination 4</div>
         <app-search [INDEX]="3"></app-search>
     </div>
-    
+
 </section>
 
-<section style="margin: 50px 0; text-align: center;">
+<section class="submit-buttons" style="margin: 50px 0; text-align: center;">
     <!-- reset button -->
-    <a (click)="resetState()" class="link hide-reset" id="resetButton" href="javascript:void(0)">reset</a>
+    <a (click)="resetState()" class="link hide-reset" id="resetButton" [routerLink]="">reset</a>
     <!-- find falcone button -->
-    <a *ngIf="isButtonShown" (click)="sendResponse()" class="link ml" href="javascript:void(0)">Find Falcone!</a>
+    <a *ngIf="isButtonShown" (click)="sendResponse()" class="link ml" [routerLink]="">Find Falcone!</a>
 </section>

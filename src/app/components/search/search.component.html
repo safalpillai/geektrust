@@ -9,7 +9,7 @@
     <!-- dropdowns -->
     <div [hidden]="!isSearchFocused" class="dropdowns">
         <ng-container *ngFor="let planet of planets">
-            <a [class.selected]="planet.selected" (click)="selectPlanet(planet)" href="javascript:void(0)">
+            <a [class.selected]="planet.selected" (click)="selectPlanet(planet)" [routerLink]="">
                 {{ planet.name }}
             </a>
         </ng-container>
@@ -22,7 +22,7 @@
     <form [formGroup]="formGroup">
         <ng-container *ngFor="let vehicle of allOptions[INDEX]">
             <div class="options-flex"
-                [class.disabled]="!vehicle.total_no 
+                [class.disabled]="!vehicle.total_no
                 || (chosenPlanet.distance > vehicle.max_distance)">
                 <input (change)="selectVehicle(vehicle)" type="radio" [checked]="false"
                     [value]="vehicle.name" formControlName="vehicleRadio">
