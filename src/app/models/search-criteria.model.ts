@@ -24,7 +24,7 @@ export class SearchCriteria {
 
     totalTimeTaken = 0;
 
-    constructor(readonly token: string) {
+    constructor() {
         const placeholder: undefined[] = Array.from({ length: 4 });
         this.planet_names = placeholder.slice();
         this.vehicle_names = placeholder.slice();

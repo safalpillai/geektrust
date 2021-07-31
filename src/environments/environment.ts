@@ -5,7 +5,7 @@ import { IEnvironment } from '@models/core.model';
  */
 export const environment: IEnvironment = {
     production: false,
-    apiEndpoint: 'https://findfalcone.herokuapp.com/',
+    apiUrl: 'https://findfalcone.herokuapp.com',
 };
 
 

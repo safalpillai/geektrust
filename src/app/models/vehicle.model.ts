@@ -4,10 +4,10 @@ import { IVehicle } from './core.model';
  * Create vehicle instance
  */
 export class Vehicle implements IVehicle {
-    name: string;
-    total_no: number;
-    max_distance: number;
-    speed: number;
+    readonly name: string;
+    readonly total_no: number;
+    readonly max_distance: number;
+    readonly speed: number;
 
     constructor(instance: IVehicle) {
         Object.assign(this, instance);

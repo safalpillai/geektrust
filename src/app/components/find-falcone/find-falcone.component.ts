@@ -1,12 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FindFalconeService } from '@services/find-falcone.service';
-import { BaseHttpService } from '@services/base-http.service';
-import { IPlanet, IVehicle, IResult } from '@models/core.model';
+import { IPlanet, IVehicle, IResult, IConfig } from '@models/core.model';
 import { Planet } from '@models/planet.model';
 import { Vehicle } from '@models/vehicle.model';
 import { SearchCriteria } from '@models/search-criteria.model';
 import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-find-falcone',
@@ -19,7 +19,8 @@ export class FindFalconeComponent implements OnInit, OnDestroy {
     isButtonShown = false;
 
     constructor(
-        private http: BaseHttpService,
+        @Inject('AppConfig') private readonly config: IConfig,
+        private http: HttpClient,
         private findFalconeService: FindFalconeService,
         private router: Router,
     ) { }
@@ -45,8 +46,8 @@ export class FindFalconeComponent implements OnInit, OnDestroy {
     renderComponent() {
         forkJoin(
             [
-                this.http.get<IPlanet[]>('planets'),
-                this.http.get<IVehicle[]>('vehicles')
+                this.http.get<IPlanet[]>(`${this.config.apiUrl}/planets`),
+                this.http.get<IVehicle[]>(`${this.config.apiUrl}/vehicles`)
             ]
         ).subscribe(responses => {
             // Set planets
@@ -63,7 +64,7 @@ export class FindFalconeComponent implements OnInit, OnDestroy {
             this.findFalconeService.pristineOptions = JSON.parse(JSON.stringify(optionsArray));
             this.findFalconeService.options$.next(optionsArray);
 
-            this.findFalconeService.searchCriteria = new SearchCriteria(localStorage.getItem('apiToken'));
+            this.findFalconeService.searchCriteria = new SearchCriteria();
         });
     }
 
@@ -71,8 +72,12 @@ export class FindFalconeComponent implements OnInit, OnDestroy {
      * Send response to API to check if falcone was found
      */
     sendResponse() {
-        const { token, planet_names, vehicle_names } = this.findFalconeService.searchCriteria;
-        this.http.post('find', { token, planet_names, vehicle_names }).subscribe((response: IResult) => {
+        const { planet_names, vehicle_names } = this.findFalconeService.searchCriteria;
+        this.http.post(`${this.config.apiUrl}/find`, {
+            planet_names,
+            vehicle_names,
+            token: this.config.apiToken
+        }).subscribe((response: IResult) => {
             if (response.status === 'success') this.router.navigate(['/result', { planet: response.planet_name }]);
             else this.router.navigate(['/result']);
         });
@@ -83,7 +88,7 @@ export class FindFalconeComponent implements OnInit, OnDestroy {
      * Reset state
      */
     resetState() {
-        this.findFalconeService.searchCriteria = new SearchCriteria(localStorage.getItem('apiToken'));
+        this.findFalconeService.searchCriteria = new SearchCriteria();
         this.findFalconeService.resetFindFalconeState$.next();
         this.isButtonShown = false;
     }

@@ -1,10 +1,13 @@
+import { IPlanet, IVehicle } from './core.model';
 import { SearchCriteria } from './search-criteria.model';
 
 describe('SearchCriteria', () => {
-    const searchCriteria = new SearchCriteria('randomapitoken');
+    let searchCriteria;
+    let VEHICLES: IVehicle[];
+    let PLANETS: IPlanet[];
 
-    beforeEach(() => {
-        const VEHICLES = [
+    beforeAll(() => {
+        VEHICLES = [
             {
                 name: 'starfighter',
                 total_no: 1,
@@ -24,8 +27,7 @@ describe('SearchCriteria', () => {
                 speed: 5
             }
         ];
-
-        const PLANETS = [
+        PLANETS = [
             {
                 name: 'mars',
                 distance: 100,
@@ -39,11 +41,25 @@ describe('SearchCriteria', () => {
                 distance: 400,
             }
         ];
-
+    });
+    beforeEach(() => {
+        searchCriteria = new SearchCriteria();
         searchCriteria['planet_names'] = ['mars', 'venus', undefined, undefined];
         searchCriteria['vehicle_names'] = ['starfighter', 'interceptor', undefined, undefined];
-        Object.defineProperty(searchCriteria, 'VEHICLES', { value: VEHICLES, writable: true });
-        Object.defineProperty(searchCriteria, 'PLANETS', { value: PLANETS, writable: true });
+        searchCriteria['VEHICLES'] = VEHICLES;
+        searchCriteria['PLANETS'] = PLANETS;
+    });
+
+    it('should have necessary properties on instantiation', () => {
+        expect(searchCriteria.planet_names.length).toBe(4);
+        expect(searchCriteria.vehicle_names.length).toBe(4);
+        expect(searchCriteria['previousVehicleState'].length).toBe(4);
+        expect(searchCriteria['previousPlanetState'].length).toBe(4);
+        expect(searchCriteria.totalTimeTaken).toBe(0);
+        expect(searchCriteria['VEHICLES']).toBeDefined();
+        expect(searchCriteria['VEHICLES'].length).toBeGreaterThan(1);
+        expect(searchCriteria['PLANETS']).toBeDefined();
+        expect(searchCriteria['PLANETS'].length).toBeGreaterThan(1);
     });
 
     it('should have planet pluto', () => {
@@ -53,10 +69,6 @@ describe('SearchCriteria', () => {
 
     it('should have 2 planets, 2 undefined slots', () => {
         expect(searchCriteria.getPlanets().length).toBe(4);
-    });
-
-    it('should have api token during initialization', () => {
-        expect(searchCriteria.token).toBeTruthy();
     });
 
     it('calculateTimeForVehicle() should return 10', () => {

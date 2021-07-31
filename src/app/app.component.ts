@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { environment } from '@environments/environment';
-import { BaseHttpService } from '@services/base-http.service';
-import { IAppToken } from '@models/core.model';
+import { IConfig, IAppToken } from '@models/core.model';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-root',
@@ -11,7 +11,8 @@ import { IAppToken } from '@models/core.model';
 export class AppComponent implements OnInit {
 
     constructor(
-        private http: BaseHttpService,
+        @Inject('AppConfig') private readonly config: IConfig,
+        private http: HttpClient,
     ) {
         // disable logging in production
         /* tslint:disable */
@@ -19,9 +20,9 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.http.post('token').subscribe((response: IAppToken) => {
-            localStorage.removeItem('apiToken');
-            localStorage.setItem('apiToken', response.token);
-        });
+        this.http.post<IAppToken>(`${this.config.apiUrl}/token`, {})
+            .subscribe((response: IAppToken) => {
+                this.config.apiToken = response.token;
+            });
     }
 }

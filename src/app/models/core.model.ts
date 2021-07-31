@@ -3,7 +3,8 @@
  */
 export type IEnvironment = {
     production: boolean;
-    apiEndpoint: string;
+    apiUrl: string;
+    apiToken?: string;
 };
 
 /**
@@ -39,4 +40,8 @@ export type IResult = {
     status: 'success' | 'false';
     planet_name?: string;
     error?: string;
+};
+
+export type IConfig = IEnvironment & {
+    [k: string]: any;
 };

@@ -42,15 +42,11 @@ describe('FindFalconeService', () => {
             }
         ];
         service = TestBed.inject(FindFalconeService);
-        service.searchCriteria = new SearchCriteria('randomapitoken');
+        service.searchCriteria = new SearchCriteria();
         service.searchCriteria['planet_names'] = ['mars', 'venus', undefined, undefined];
         service.searchCriteria['vehicle_names'] = ['starfighter', 'interceptor', undefined, undefined];
         Object.defineProperty(service.searchCriteria, 'VEHICLES', { value: VEHICLES, writable: true });
         Object.defineProperty(service.searchCriteria, 'PLANETS', { value: PLANETS, writable: true });
-    });
-
-    it('search criteria service member should have api token', () => {
-        expect(service.searchCriteria.token).toBeTruthy();
     });
 
     it('should have planet names array with 4 empty slots', () => {
