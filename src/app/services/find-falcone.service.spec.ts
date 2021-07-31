@@ -1,12 +1,15 @@
 import { TestBed } from '@angular/core/testing';
+import { IPlanet, IVehicle } from '@models/core.model';
 import { SearchCriteria } from '@models/search-criteria.model';
 import { FindFalconeService } from './find-falcone.service';
 
 describe('FindFalconeService', () => {
     let service: FindFalconeService;
+    let VEHICLES: IVehicle[];
+    let PLANETS: IPlanet[];
 
-    beforeEach(() => {
-        const VEHICLES = [
+    beforeAll(() => {
+        VEHICLES = [
             {
                 name: 'starfighter',
                 total_no: 1,
@@ -26,8 +29,7 @@ describe('FindFalconeService', () => {
                 speed: 5
             }
         ];
-
-        const PLANETS = [
+        PLANETS = [
             {
                 name: 'mars',
                 distance: 100,
@@ -41,6 +43,8 @@ describe('FindFalconeService', () => {
                 distance: 400,
             }
         ];
+    });
+    beforeEach(() => {
         service = TestBed.inject(FindFalconeService);
         service.searchCriteria = new SearchCriteria();
         service.searchCriteria['planet_names'] = ['mars', 'venus', undefined, undefined];
