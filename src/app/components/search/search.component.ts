@@ -15,7 +15,8 @@ import { debounceTime, filter, takeWhile } from 'rxjs/operators';
 })
 export class SearchComponent implements OnInit, OnDestroy {
     @ViewChild('searchWrapper') searchWrapper: ElementRef;
-    @Input() INDEX;
+    @Input() INDEX: number;
+    private isComponentAlive = true;
     planets: IPlanet[];
     copyOfPlanets: IPlanet[];
     allOptions: IVehicle[][];
@@ -25,7 +26,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     searchOutput$ = new Subject<string>();
     isSearchFocused = false;
     isOptionsShown = false;
-    isComponentAlive = true;
 
     constructor(
         private findFalconeService: FindFalconeService,
@@ -40,10 +40,15 @@ export class SearchComponent implements OnInit, OnDestroy {
         });
 
         // Subscribe to planets
-        this.findFalconeService.planets$.subscribe(planets => {
-            this.planets = planets;
-            this.copyOfPlanets = planets.slice();
-        });
+        this.findFalconeService.planets$
+            .pipe(
+                takeWhile(_ => this.isComponentAlive),
+                debounceTime(100)
+            )
+            .subscribe((planets: IPlanet[]) => {
+                this.planets = planets;
+                this.copyOfPlanets = planets.slice();
+            });
 
         // Emit search textbox changes using subject
         this.search.valueChanges.pipe(
@@ -57,7 +62,7 @@ export class SearchComponent implements OnInit, OnDestroy {
                 return true;
             }),
             filter(query => query.length > 1),
-        ).subscribe(value => {
+        ).subscribe((value: string) => {
             this.searchOutput$.next(value);
         });
 
@@ -66,10 +71,12 @@ export class SearchComponent implements OnInit, OnDestroy {
             .pipe(
                 takeWhile(_ => this.isComponentAlive),
             )
-            .subscribe(query => {
-                this.planets = query
-                    ? this.copyOfPlanets.filter(planet => planet.name.toLowerCase().includes(query.toLowerCase()))
-                    : this.copyOfPlanets;
+            .subscribe((query: string) => {
+                const queryResults: IPlanet[] = this.copyOfPlanets
+                    .filter((planet: IPlanet) => planet.name.toLowerCase().includes(query.toLowerCase()));
+                queryResults.length
+                    ? this.planets = queryResults
+                    : this.planets = [];
             });
 
         // Subscribe to all options array
@@ -77,7 +84,7 @@ export class SearchComponent implements OnInit, OnDestroy {
             .pipe(
                 takeWhile(_ => this.isComponentAlive),
             )
-            .subscribe(allOptions => this.allOptions = allOptions);
+            .subscribe((allOptions: IVehicle[][]) => this.allOptions = allOptions);
 
         // Subscribe to planets reset state
         this.findFalconeService.resetFindFalconeState$
@@ -108,7 +115,7 @@ export class SearchComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         // Unsubscribe subscriptions to avoid possible memory leaks
         this.isComponentAlive = false;
     }
@@ -116,17 +123,17 @@ export class SearchComponent implements OnInit, OnDestroy {
     /**
      * Debounced blur event to fire selectPlanet() before hiding dropdowns
      */
-    debouncedBlur() {
+    debouncedBlur(): void {
         setTimeout(() => {
             this.isSearchFocused = false;
-        }, 200);
+        }, 100);
     }
 
     /**
      * Planet selection event
      * @param selected Selected planet to be inserted in SearchCriteria.planet_names
      */
-    selectPlanet(selected: IPlanet) {
+    selectPlanet(selected: IPlanet): void {
         this.chosenPlanet = selected;
 
         // Update SearchCriteria.planet_names
@@ -134,7 +141,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
         // Update planets array with selections
         const updatedPlanets: IPlanet[] = this.copyOfPlanets
-            .map(planet => {
+            .map((planet: IPlanet) => {
                 /* tslint:disable */
                 planet.name === selected.name && (planet.selected = true);
                 return planet;
@@ -153,7 +160,7 @@ export class SearchComponent implements OnInit, OnDestroy {
      * Vehicle selection event
      * @param selected Selected vehicle to be inserted in SearchCriteria.vehicle_names
      */
-    selectVehicle(selected: IVehicle) {
+    selectVehicle(selected: IVehicle): void {
         this.findFalconeService.setVehicleAsSelected(this.INDEX, selected.name);
 
         // Update time taken

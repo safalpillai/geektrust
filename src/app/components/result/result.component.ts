@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeWhile } from 'rxjs/operators';
 
@@ -7,10 +7,10 @@ import { takeWhile } from 'rxjs/operators';
     templateUrl: './result.component.html',
     styleUrls: ['./result.component.scss']
 })
-export class ResultComponent implements OnInit {
+export class ResultComponent implements OnInit, OnDestroy {
+    private isComponentAlive = true;
     isFound: boolean;
     planet: string;
-    isComponentAlive = true;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -28,7 +28,7 @@ export class ResultComponent implements OnInit {
             });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         // Unsubscribe subscriptions to avoid possible memory leaks
         this.isComponentAlive = false;
     }

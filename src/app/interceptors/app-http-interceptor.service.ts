@@ -24,7 +24,7 @@ export class AppHttpInterceptorService implements HttpInterceptor {
         headers = headers.append('Accept', 'application/json');
         const authorizedRequest = req.clone({ headers });
         return next.handle(authorizedRequest).pipe(
-            catchError(this.handleAppError.bind(this))
+            catchError(this.handleAppError)
         );
     }
 
@@ -32,7 +32,7 @@ export class AppHttpInterceptorService implements HttpInterceptor {
      * Default API error handler for all API calls
      * @param error Error object sent from API
      */
-    handleAppError(error): ObservableInput<any> {
+    handleAppError(error: any): ObservableInput<any> {
         // Error shown without any toast service
         if (error?.error) {
             alert(`Error shown without any toast service - ${JSON.stringify(error.error, null, 3)}`);

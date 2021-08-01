@@ -42,6 +42,9 @@ export type IResult = {
     error?: string;
 };
 
+/**
+ * Environment + config properties
+ */
 export type IConfig = IEnvironment & {
     [k: string]: any;
 };

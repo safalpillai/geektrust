@@ -37,14 +37,14 @@ export class SearchCriteria {
      * @param index Index to insert newly selected planet
      * @param name Name of the planet
      */
-    selectPlanet(index: number, name: string) {
+    selectPlanet(index: number, name: string): void {
         this.setPreviousPlanetState(this.getPlanets().slice());
         this.planet_names[index] = name;
     }
 
     getPlanets = (): string[] => this.planet_names;
 
-    private setPreviousPlanetState(vehicleState: string[]) {
+    private setPreviousPlanetState(vehicleState: string[]): void {
         this.previousPlanetState = vehicleState;
     }
 
@@ -55,7 +55,7 @@ export class SearchCriteria {
      * @param index Index to insert newly selected vehicle
      * @param name Name of the vehicle
      */
-    selectVehicle(index: number, name: string) {
+    selectVehicle(index: number, name: string): void {
         this.setPreviousVehicleState(this.getVehicles().slice());
         this.vehicle_names[index] = name;
         this.totalTimeTaken = this.calculateTotalTime();
@@ -63,7 +63,7 @@ export class SearchCriteria {
 
     getVehicles = (): string[] => this.vehicle_names;
 
-    private setPreviousVehicleState(vehicleState: string[]) {
+    private setPreviousVehicleState(vehicleState: string[]): void {
         this.previousVehicleState = vehicleState;
     }
 
@@ -83,7 +83,7 @@ export class SearchCriteria {
      * Calculate total time taken based on chosen planets & vehicles
      */
     calculateTotalTime(): number {
-        return this.vehicle_names.reduce((previous, current, index) => {
+        return this.vehicle_names.reduce((previous: number, current: string, index: number) => {
             /* tslint:disable */
             !!current && (previous += this.calculateTimeForVehicle(current, index));
             return previous;
@@ -96,8 +96,8 @@ export class SearchCriteria {
      * @param index Index of associated planet in planet_names
      */
     calculateTimeForVehicle(vehicleName: string, index: number): number {
-        const selectedVehicle = this.VEHICLES.filter(vehicle => vehicle.name === vehicleName)[0];
-        const selectedPlanet = this.PLANETS.filter(planet => planet.name === this.planet_names[index])[0];
+        const selectedVehicle = this.VEHICLES.filter((vehicle: IVehicle) => vehicle.name === vehicleName)[0];
+        const selectedPlanet = this.PLANETS.filter((planet: IPlanet) => planet.name === this.planet_names[index])[0];
         return selectedPlanet.distance / selectedVehicle.speed;
     }
 }

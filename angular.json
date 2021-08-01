@@ -34,7 +34,7 @@
                         "extractLicenses": false,
                         "buildOptimizer": false,
                         "sourceMap": {
-                            "hidden": true,
+                            "hidden": false,
                             "vendor": true
                         },
                         "optimization": false,

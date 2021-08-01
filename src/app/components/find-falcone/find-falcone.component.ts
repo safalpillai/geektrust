@@ -7,6 +7,7 @@ import { SearchCriteria } from '@models/search-criteria.model';
 import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
     selector: 'app-find-falcone',
@@ -14,7 +15,7 @@ import { HttpClient } from '@angular/common/http';
     styleUrls: ['./find-falcone.component.scss']
 })
 export class FindFalconeComponent implements OnInit, OnDestroy {
-    subscription = new Subscription();
+    private isComponentAlive = true;
     totalTime = 0;
     isButtonShown = false;
 
@@ -29,37 +30,45 @@ export class FindFalconeComponent implements OnInit, OnDestroy {
         this.renderComponent();
 
         // Subscribe to total time taken value
-        this.findFalconeService.totalTimeTaken$.subscribe(time => this.totalTime = time);
+        this.findFalconeService.totalTimeTaken$
+            .pipe(
+                takeWhile(_ => this.isComponentAlive)
+            )
+            .subscribe((time: number) => this.totalTime = time);
 
         // Subscribe to find falcone button status
-        this.findFalconeService.isResponseValid$.subscribe(status => this.isButtonShown = status);
+        this.findFalconeService.isResponseValid$
+            .pipe(
+                takeWhile(_ => this.isComponentAlive)
+            )
+            .subscribe((status: boolean) => this.isButtonShown = status);
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         // Unsubscribe component subscriptions to avoid possible memory leaks
-        this.subscription.unsubscribe();
+        this.isComponentAlive = false;
     }
 
     /**
      * Initialize component with API values
      */
-    renderComponent() {
+    renderComponent(): void {
         forkJoin(
             [
                 this.http.get<IPlanet[]>(`${this.config.apiUrl}/planets`),
                 this.http.get<IVehicle[]>(`${this.config.apiUrl}/vehicles`)
             ]
-        ).subscribe(responses => {
+        ).subscribe((responses: [IPlanet[], IVehicle[]]) => {
             // Set planets
             localStorage.setItem('planets', JSON.stringify(responses[0]));
-            const planets = responses[0].map(planet => new Planet(planet));
+            const planets = responses[0].map((planet: IPlanet) => new Planet(planet));
             this.findFalconeService.pristinePlanets = JSON.parse(JSON.stringify(planets));
             this.findFalconeService.planets$.next(planets);
 
             // Set vehicles
             localStorage.setItem('vehicles', JSON.stringify(responses[1]));
             const optionsArray: IVehicle[][] = Array.from({ length: 4 }).map(_ => {
-                return responses[1].map(vehicle => new Vehicle(vehicle));
+                return responses[1].map((vehicle: IVehicle) => new Vehicle(vehicle));
             });
             this.findFalconeService.pristineOptions = JSON.parse(JSON.stringify(optionsArray));
             this.findFalconeService.options$.next(optionsArray);
@@ -71,12 +80,12 @@ export class FindFalconeComponent implements OnInit, OnDestroy {
     /**
      * Send response to API to check if falcone was found
      */
-    sendResponse() {
+    sendResponse(): void {
         const { planet_names, vehicle_names } = this.findFalconeService.searchCriteria;
         this.http.post(`${this.config.apiUrl}/find`, {
+            token: this.config.apiToken,
             planet_names,
             vehicle_names,
-            token: this.config.apiToken
         }).subscribe((response: IResult) => {
             if (response.status === 'success') this.router.navigate(['/result', { planet: response.planet_name }]);
             else this.router.navigate(['/result']);
@@ -87,7 +96,7 @@ export class FindFalconeComponent implements OnInit, OnDestroy {
     /**
      * Reset state
      */
-    resetState() {
+    resetState(): void {
         this.findFalconeService.searchCriteria = new SearchCriteria();
         this.findFalconeService.resetFindFalconeState$.next();
         this.isButtonShown = false;

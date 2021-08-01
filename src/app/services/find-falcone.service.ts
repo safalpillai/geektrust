@@ -42,7 +42,7 @@ export class FindFalconeService {
      * @param index Index of insertion in SearchCriteria.planet_names
      * @param name Name of the planet
      */
-    setPlanetAsSelected(index: number, name: string) {
+    setPlanetAsSelected(index: number, name: string): void {
         this.searchCriteria.selectPlanet(index, name);
 
         // Show reset button
@@ -56,7 +56,7 @@ export class FindFalconeService {
      * @param index Index of insertion in SearchCriteria.vehicle_names
      * @param name Name of the vehicle
      */
-    setVehicleAsSelected(index: number, name: string) {
+    setVehicleAsSelected(index: number, name: string): void {
         this.searchCriteria.selectVehicle(index, name);
 
         // Toggle find falcone button
@@ -70,9 +70,9 @@ export class FindFalconeService {
     reviseVehicleCount(index: number, vehicleName: string): IVehicle[][] {
         const previousState = this.searchCriteria.getPreviousVehicleState();
         const alreadySelected = previousState[index];
-        return this.options$.value.map(vehicleArray => {
+        return this.options$.value.map((vehicleArray: IVehicle[]) => {
             const selectedVehicles = this.searchCriteria.getVehicles().filter(Boolean);
-            vehicleArray.forEach(vehicle => {
+            vehicleArray.forEach((vehicle: IVehicle) => {
                 if (
                     selectedVehicles.includes(vehicle.name)
                     && vehicleName === vehicle.name
@@ -92,7 +92,7 @@ export class FindFalconeService {
      * Set dropdown options to show in each search component
      * @param index To check if value exists in this index
      */
-    reviseAllVehicleOptions(index: number, vehicleName: string) {
+    reviseAllVehicleOptions(index: number, vehicleName: string): void {
         const optionsWithRevisedVehicleCount = this.reviseVehicleCount(index, vehicleName);
         this.options$.next(optionsWithRevisedVehicleCount);
     }
