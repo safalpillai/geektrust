@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { IPlanet, IVehicle } from '@models/core.model';
-import { SearchCriteria } from '@models/search-criteria.model';
 import { FindFalconeService } from '@services/find-falcone.service';
 import { Subject } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
-import { SubSink } from 'subsink';
+import { debounceTime, filter, takeWhile } from 'rxjs/operators';
 
 /**
  * Reusable search component which encapsulates planet selection UI
@@ -25,9 +23,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     chosenPlanet: IPlanet = null;
     search = new FormControl('');
     searchOutput$ = new Subject<string>();
-    subsink = new SubSink();
     isSearchFocused = false;
     isOptionsShown = false;
+    isComponentAlive = true;
 
     constructor(
         private findFalconeService: FindFalconeService,
@@ -48,7 +46,8 @@ export class SearchComponent implements OnInit, OnDestroy {
         });
 
         // Emit search textbox changes using subject
-        this.subsink.sink = this.search.valueChanges.pipe(
+        this.search.valueChanges.pipe(
+            takeWhile(_ => this.isComponentAlive),
             debounceTime(600),
             filter(query => {
                 if (!query) {
@@ -63,44 +62,55 @@ export class SearchComponent implements OnInit, OnDestroy {
         });
 
         // Search textbox subject subscription
-        this.subsink.sink = this.searchOutput$.subscribe(query => {
-            this.planets = query
-                ? this.copyOfPlanets.filter(planet => planet.name.toLowerCase().includes(query.toLowerCase()))
-                : this.copyOfPlanets;
-        });
+        this.searchOutput$
+            .pipe(
+                takeWhile(_ => this.isComponentAlive),
+            )
+            .subscribe(query => {
+                this.planets = query
+                    ? this.copyOfPlanets.filter(planet => planet.name.toLowerCase().includes(query.toLowerCase()))
+                    : this.copyOfPlanets;
+            });
 
         // Subscribe to all options array
-        this.subsink.sink = this.findFalconeService.options$
+        this.findFalconeService.options$
+            .pipe(
+                takeWhile(_ => this.isComponentAlive),
+            )
             .subscribe(allOptions => this.allOptions = allOptions);
 
         // Subscribe to planets reset state
-        this.subsink.sink = this.findFalconeService.resetFindFalconeState$.subscribe(_ => {
-            this.chosenPlanet = null;
-            this.search.setValue('');
-            this.isOptionsShown = false;
-            this.renderer.removeClass(this.searchWrapper.nativeElement, 'done');
+        this.findFalconeService.resetFindFalconeState$
+            .pipe(
+                takeWhile(_ => this.isComponentAlive)
+            )
+            .subscribe(_ => {
+                this.chosenPlanet = null;
+                this.search.setValue('');
+                this.isOptionsShown = false;
+                this.renderer.removeClass(this.searchWrapper.nativeElement, 'done');
 
-            // Hide reset button
-            this.renderer.addClass(document.querySelector('#resetButton'), 'hide-reset');
+                // Hide reset button
+                this.renderer.addClass(document.querySelector('#resetButton'), 'hide-reset');
 
-            // Reset time
-            this.findFalconeService.totalTimeTaken$.next(0);
+                // Reset time
+                this.findFalconeService.totalTimeTaken$.next(0);
 
-            // Reset planets
-            this.findFalconeService.planets$.next(
-                JSON.parse(JSON.stringify(this.findFalconeService.pristinePlanets))
-            );
+                // Reset planets
+                this.findFalconeService.planets$.next(
+                    JSON.parse(JSON.stringify(this.findFalconeService.pristinePlanets))
+                );
 
-            // Reset all options
-            this.findFalconeService.options$.next(
-                JSON.parse(JSON.stringify(this.findFalconeService.pristineOptions))
-            );
-        });
+                // Reset all options
+                this.findFalconeService.options$.next(
+                    JSON.parse(JSON.stringify(this.findFalconeService.pristineOptions))
+                );
+            });
     }
 
     ngOnDestroy() {
-        // Unsubscribe component subscriptions to avoid possible memory leaks
-        this.subsink.unsubscribe();
+        // Unsubscribe subscriptions to avoid possible memory leaks
+        this.isComponentAlive = false;
     }
 
     /**
